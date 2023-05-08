@@ -8,12 +8,8 @@ class CadastroclienteSerializer(serializers.ModelSerializer):
         #tudo que tá aqui dentro do fields é pra ser convertido e enviado para o banco de dados
         fields=['id', 'nome', 'cpf', 'email', 'data_nascimento', 'celular', 'senha']
 
-class CadastroSenhaEnderecoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model: Endereco
-        fields=['logradouro', 'bairro', 'cidade', 'uf', 'cep']
 
 class EnderecoSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Endereco
-        fiels = ['id', 'logradouro', 'bairro', 'cidade', 'uf', 'cep']
+        fields = ['id', 'logradouro', 'bairro', 'cidade', 'uf', 'cep']

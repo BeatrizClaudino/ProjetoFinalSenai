@@ -2,12 +2,12 @@ from django.db import models
 
 class Cliente(models.Model):
     nome = models.CharField(max_length=255)
-    celular = models.CharField(max_length=20)
+    celular = models.CharField(max_length=20, default='')
     cpf = models.CharField(max_length=11, unique=True)
     email = models.EmailField(null=False)
     data_nascimento = models.DateField()
     usuario = models.CharField(max_length=20)
-    foto = models.CharField(max_length=100)
+    # foto = models.CharField(max_length=100)
     # foto_usuario = models.ImageField(null=True)
     senha = models.CharField(max_length=8)
 
