@@ -2,9 +2,9 @@ import { View, Text, TextInput } from 'react-native';
 
 const CaixaInput = props => {
     return (
-      <View>
+      <View className="bg-cyan-300 w-full h-full">
         <Text>{props.texto}</Text>
-        <TextInput
+        <TextInput className="w-full h-9 bg-black"
           placeholder={props.placeholder}
           keyboardType={props.tipoTeclado}
           value={props.valor}
