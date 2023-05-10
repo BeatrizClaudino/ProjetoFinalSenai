@@ -6,7 +6,7 @@ import Routers from './routers';
 
 function App() {
   return (
-    <Cadastro/>
+    <Routers/>
   );
 }
 
