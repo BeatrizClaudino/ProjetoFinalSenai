@@ -8,7 +8,7 @@ export default function Cadastro({ navigation }) {
   const [email, setEmail] = useState('');
   const [datanascimento, setDatanascimento] = useState('');
   const [telefone, setTelefone] = useState('');
-
+  const [passo, setPasso] = useState(1);
   //PARA REALIZAR O UPLOAD TODAS AS CONDIÇÕES DEVEM SER ATENDIDAS
   const upload = (e) => {
     e.preventDefault()
@@ -32,17 +32,7 @@ export default function Cadastro({ navigation }) {
     else if (!telefone) {
       alert('Preencha o campo celular')
       return
-    }
-    else {
-      
-      navigation.navigate('Cadastro2', {
-        nome: nome, 
-        email: email, 
-        cpf: cpf, 
-        datanascimento: datanascimento, 
-        telefone: telefone
-      })
-
+    
     }
 
     // const storageRef = ref(
@@ -60,6 +50,10 @@ export default function Cadastro({ navigation }) {
     //   })
     // })
   }
+  function Calculo(){
+    var data = datanascimento
+    
+  }
 
 
   // const criarConta = (nome, email, cpf, datanascimento, telefone) =>{
@@ -75,22 +69,48 @@ export default function Cadastro({ navigation }) {
 
 
   return (
-    <View className="flex-1 h-screen w-screen items-center justify-center text-center bg-slate-400">
-      <View>
-        <Text className="flex text-lg items-center text-center text-cyan-50">
-          Agora precisamos das suas informações pessoais
-        </Text>
-        <View className="flex justify-center items-center">
-          <View className="w-[90%]">
-          <TextInput className="mb-5 h-10 bg-slate-300 rounded-lg" placeholder="Digite o seu nome" keyboardType="text" onChange={(nome) => setNome(nome)} />
-            <TextInput className="mb-5 h-10 bg-slate-300 rounded-lg" placeholder="Digite o seu e-mail" keyboardType="email-address" onChange={(email) => setEmail(email)} />
-            <TextInput className="mb-5 h-10 bg-slate-300 rounded-lg" placeholder="Digite o seu CPF" keyboardType="phone-pad" onChange={(cpf) => setCpf(cpf)} />
-            <TextInput className="mb-5 h-10 bg-slate-300 rounded-lg" placeholder="Digite a sua data de nascimento" keyboardType="phone-pad" onChange={(datanascimento) => setDatanascimento(datanascimento)} />
-            <TextInput className="mb-5 h-10 bg-slate-300 rounded-lg" placeholder="Digite o seu telefone" keyboardType="phone-pad" onChange={(telefone) => setTelefone(telefone)} />
+    <>
+      {passo == 1 ?
+        <View className="w-screen h-screen bg-black">
+          <View className="pt-24 flex-1 items-center">
+            <View className="flex text-center items-center justify-center w-[80%]">
+              <Text className="text-[24px] text-[#5a5d68] pb-16">
+                Bem-vindo ao Cashbank!
+              </Text>
+              <Text className="text-[15px] pb-12 text-[#5a5d68] text-justify">
+                Para iniciarmos precisaremos do seu CPF, e lembrando, caso seja menor de idade preencha com os dados de um responsável.
+              </Text>
+            </View>
+            <View className="flex w-[100%] items-center">
+              <TextInput className="w-[80%] mb-12 h-10 bg-slate-50 rounded-lg" placeholder="Digite o seu nome" keyboardType="default" onChange={(nome) => setNome(nome)} />
+              <TextInput className="w-[80%] mb-16 h-10 bg-slate-50 rounded-lg" placeholder="Digite a sua data de nascimento" keyboardType="phone-pad" onChange={(datanascimento) => setDatanascimento(datanascimento)} />
+              <Botao evento={() => setPasso(2)} />
+            </View>
           </View>
-          <Botao evento={upload}/>
+        </View>
+        :
+        passo == 2 ?
+        <View className="w-screen h-screen bg-black">
+        <View className="w-full pt-24 flex-1 items-center">
+          <View className="flex text-center items-center justify-center w-[90%]">
+            <Text className="text-[24px] text-[#5a5d68] pb-12">
+              Agora precisamos do seu CPF
+            </Text>
+            <Text className="text-[15px] pb-12 text-[#5a5d68] text-justify">
+              Suas informações estão seguras conosco!
+            </Text>
+          </View>
+          <View className="flex w-[100%] items-center">
+          <TextInput className="w-[80%] mb-16 h-10 bg-slate-50 rounded-lg" placeholder="Digite o seu CPF" maxLength={11} keyboardType="phone-pad" onChange={(cpf) => setCpf(cpf)} />
+            <Botao evento={() => setPasso(2)} />
+          </View>
         </View>
       </View>
-    </View>
+          :
+          null
+      }
+
+    </>
+
   )
 }

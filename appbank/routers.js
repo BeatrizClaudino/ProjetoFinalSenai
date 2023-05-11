@@ -6,8 +6,6 @@ import { Feather } from '@expo/vector-icons'
 import Home from './src/paginas/Home'
 import Login from './src/paginas/Login'
 import Cadastro from './src/paginas/Cadastro'
-import Cadastro2 from "./src/paginas/Cadastro2.0";
-
 
 const Pilha = createStackNavigator()
 const Nav = createBottomTabNavigator()
@@ -61,7 +59,7 @@ export default function Routers() {
                 <Pilha.Screen
                     name="Cadastro"
                     component={Cadastro}
-                    options={{ title: false }}
+                    options={{ title: 'Boas-vindas'}}
                 />
 
                 <Pilha.Screen
@@ -79,12 +77,6 @@ export default function Routers() {
                 <Pilha.Screen
                     name="Login"
                     component={Login}
-                    options={{ title: false }}
-                />
-
-                <Pilha.Screen
-                    name="Cadastro2"
-                    component={Cadastro2}
                     options={{ title: false }}
                 />
             </Pilha.Navigator>
