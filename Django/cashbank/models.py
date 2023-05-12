@@ -7,8 +7,6 @@ class Cliente(models.Model):
     email = models.EmailField(null=False)
     data_nascimento = models.DateField()
     usuario = models.CharField(max_length=20)
-    # foto = models.CharField(max_length=100)
-    # foto_usuario = models.ImageField(null=True)
     senha = models.CharField(max_length=8)
 
     def __str__(self) -> str:
@@ -37,4 +35,4 @@ class Conta(models.Model):
     numero = models.CharField(max_length=25)
     tipo = models.CharField(max_length=20)
     # limite = models.DecimalField()
-    ativa = models.BooleanField(default=True)
+    ativa = models.BooleanField(default=True)   
