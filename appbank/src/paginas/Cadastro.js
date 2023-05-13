@@ -12,8 +12,6 @@ export default function Cadastro({ navigation }) {
   const [confirmarSenha, setConfirmarSenha] = useState('');
   const [passo, setPasso] = useState(1);
 
-  console.log(senha)
-  console.log(confirmarSenha)
 
   //PARA REALIZAR O UPLOAD TODAS AS CONDIÇÕES DEVEM SER ATENDIDAS
   const upload = () => {
@@ -32,6 +30,9 @@ export default function Cadastro({ navigation }) {
   const upload2 = () => {
     if (!cpf) {
       Alert.alert('Preencha o campo cpf')
+    }
+    else if (cpf.length < 11){
+      Alert.alert('CPF inválido')
     }
     else {
       setPasso(3)
@@ -52,18 +53,20 @@ export default function Cadastro({ navigation }) {
     if (!senha) {
       Alert.alert('Preencha o campo senha')
     }
-    else if(senha.length < 8){
-      Alert.alert('A senha precisa ser maior que 8 caracteres')
+    else if(senha.length < 6){
+      Alert.alert('Senha inválida, digite 6 números')
     }
-    else if(confirmarSenha.length < 8){
-      Alert.alert('A senha precisa ser maior que 8 caracteres')
+    else if(confirmarSenha.length < 6){
+      Alert.alert('As senhas não conferem')
       
     }
     else if(confirmarSenha != senha){
       Alert.alert('As senhas não conferem')
       
     }
-    
+    else{
+    navigation.navigate('Home')
+    }
   }
 
 
@@ -114,9 +117,9 @@ export default function Cadastro({ navigation }) {
               </Text>
             </View>
             <View className="flex w-[100%] items-center">
-              <TextInput className="w-[80%] mb-12 h-10 bg-slate-50 rounded-lg" placeholder="Digite o seu nome" keyboardType="default" onChangeText={(e) => setNome(e)} />
-              <TextInput className="w-[80%] mb-16 h-10 bg-slate-50 rounded-lg" placeholder="Digite a sua data de nascimento" keyboardType="phone-pad" onChangeText={(e) => setDatanascimento(e)} />
-              <Botao evento={() => upload()} />
+              <TextInput className="w-[80%] mb-12 h-12 bg-slate-50 rounded-lg" placeholder="Digite o seu nome" keyboardType="default" onChangeText={(e) => setNome(e)} />
+              <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="Digite a sua data de nascimento" keyboardType="phone-pad" onChangeText={(e) => setDatanascimento(e)} />
+              <Botao evento={() => upload()} nomeBotao={"Continuar"}/>
             </View>
           </View>
         </View>
@@ -133,8 +136,8 @@ export default function Cadastro({ navigation }) {
                 </Text>
               </View>
               <View className="flex w-[100%] items-center">
-                <TextInput className="w-[80%] mb-16 h-10 bg-slate-50 rounded-lg" placeholder="Digite o seu CPF" maxLength={11} keyboardType="phone-pad" onChangeText={(e) => setCpf(e)} />
-                <Botao evento={() => upload2()} />
+                <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="Digite o seu CPF" maxLength={11} keyboardType="phone-pad" onChangeText={(e) => setCpf(e)} />
+                <Botao evento={() => upload2()} nomeBotao={"Continuar"}/>
               </View>
             </View>
           </View>
@@ -151,9 +154,9 @@ export default function Cadastro({ navigation }) {
                   </Text>
                 </View>
                 <View className="flex w-[100%] items-center">
-                  <TextInput className="w-[80%] mb-16 h-10 bg-slate-50 rounded-lg" placeholder="Digite o seu E-mail" keyboardType="default" onChangeText={(e) => setEmail(e)} />
-                  <TextInput className="w-[80%] mb-16 h-10 bg-slate-50 rounded-lg" placeholder="(00) 00000-0000" keyboardType="phone-pad" onChangeText={(e) => setTelefone(e)} />
-                  <Botao evento={() => upload3()} />
+                  <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="Digite o seu E-mail" keyboardType="default" onChangeText={(e) => setEmail(e)} />
+                  <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="(00) 00000-0000" keyboardType="phone-pad" onChangeText={(e) => setTelefone(e)} />
+                  <Botao evento={() => upload3()} nomeBotao={"Continuar"} />
                 </View>
               </View>
             </View>
@@ -170,9 +173,9 @@ export default function Cadastro({ navigation }) {
                     </Text>
                   </View>
                   <View className="flex w-[100%] items-center">
-                    <TextInput className="w-[80%] mb-16 h-10 bg-slate-50 rounded-lg" placeholder="Digite a sua senha" keyboardType="phone-pad" onChangeText ={(e) => setSenha(e)} />
-                    <TextInput className="w-[80%] mb-16 h-10 bg-slate-50 rounded-lg" placeholder="confirmar senha" keyboardType="phone-pad" onChangeText={(e) => setConfirmarSenha(e)} />
-                    <Botao evento={() => upload4()} />
+                    <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="Digite a sua senha" maxLength={6} keyboardType="phone-pad" secureTextEntry={true} onChangeText={(e) => setSenha(e)} />
+                    <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="confirmar senha" maxLength={6} keyboardType="phone-pad" onChangeText={(e) => setConfirmarSenha(e)} />
+                    <Botao evento={() => upload4()} nomeBotao={"Finalizar Cadastro"}/>
                   </View>
                 </View>
               </View>
