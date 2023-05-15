@@ -33,8 +33,8 @@ const Home = () => {
                         </li>
                     </ul>
                 </div>
-            <div>
-                <img className='w-[700px] h-[700px]' src={Celular} alt='celular com o aplicativo do banco'></img>
+            <div className=''>
+                <img src={Celular} alt='celular com o aplicativo do banco'></img>
             </div>
             </div>
             <div className='w-screen h-screen dark: bg-[#1B3168] flex justify-center'>

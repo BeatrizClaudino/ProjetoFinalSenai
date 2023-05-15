@@ -22,10 +22,12 @@ const Header = ({ dados }) => {
             Dúvidas
         </li>
         
-          <li className="text-dark-100 dark:text-blue-50">
+          <li className="h-[5vh] rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-[3px]">
+            <div className="flex rounded-full h-full w-full items-center justify-center bg-blue-950 text-dark-100 dark:text-blue-50 p-3">
           <Link to={"/Cadastro"}>
               Create your account
             </Link>
+            </div>
           </li>
         
         {
