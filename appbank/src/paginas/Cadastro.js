@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Button, Alert } from 'react-native';
 import Botao from '../componentes/Button';
+import axios from 'axios';
 
 export default function Cadastro({ navigation }) {
   const [cpf, setCpf] = useState('');
@@ -67,6 +68,7 @@ export default function Cadastro({ navigation }) {
     else{
     navigation.navigate('Home')
     }
+    criarConta()
   }
 
 
@@ -91,16 +93,17 @@ export default function Cadastro({ navigation }) {
   // }
 
 
-  // const criarConta = (nome, email, cpf, datanascimento, telefone) =>{
-  //   axios.post('http://127.0.0.1:8000/app/usuario/',
-  //   {
-  //     nome: nome,
-  //     email: email,
-  //     cpf: cpf,
-  //     datanascimento: datanascimento,
-  //     celular: telefone,
-  //   })
-  // }
+  const criarConta = (nome, email, cpf, datanascimento, telefone, senha) =>{
+    axios.post('http://10.109.72.36:8000/auth/users/',
+    {
+      nome: nome,
+      email: email,
+      cpf: cpf,
+      datanascimento: datanascimento,
+      celular: telefone,
+      password: senha
+    })
+  }
 
 
   return (
@@ -175,7 +178,7 @@ export default function Cadastro({ navigation }) {
                   <View className="flex w-[100%] items-center">
                     <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="Digite a sua senha" maxLength={6} keyboardType="phone-pad" secureTextEntry={true} onChangeText={(e) => setSenha(e)} />
                     <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="confirmar senha" maxLength={6} keyboardType="phone-pad" onChangeText={(e) => setConfirmarSenha(e)} />
-                    <Botao evento={() => upload4()} nomeBotao={"Finalizar Cadastro"}/>
+                    <Botao evento={() => upload4() } nomeBotao={"Finalizar Cadastro"}/>
                   </View>
                 </View>
               </View>
