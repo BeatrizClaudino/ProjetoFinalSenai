@@ -67,8 +67,8 @@ export default function Cadastro({ navigation }) {
     }
     else{
     navigation.navigate('Home')
-    }
     criarConta()
+    }
   }
 
 
@@ -102,6 +102,8 @@ export default function Cadastro({ navigation }) {
       datanascimento: datanascimento,
       celular: telefone,
       password: senha
+    }).then((res)=>{
+      Alert.alert(res)
     })
   }
 

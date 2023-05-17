@@ -1,4 +1,4 @@
-import { NavigationContainer} from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 //===== PRECISA FAZER O DOWNLOAD =====
@@ -6,6 +6,7 @@ import { Feather } from '@expo/vector-icons'
 import Home from './src/paginas/Home'
 import Login from './src/paginas/Login'
 import Cadastro from './src/paginas/Cadastro'
+import Pix from "./src/paginas/Pix";
 
 const Pilha = createStackNavigator()
 const Nav = createBottomTabNavigator()
@@ -56,19 +57,23 @@ export default function Routers() {
         // </View>
         <NavigationContainer>
             <Pilha.Navigator>
-            <Pilha.Screen
-                    name="Cadastro"
-                    component={Cadastro}
-                    options={{ title: 'Boas-vindas'}}
-                />
-                
-            <Pilha.Screen
+                <Pilha.Screen
                     name="Home"
                     component={Home}
                     options={{ title: false, headerShown: false }}
                 />
-                
+                <Pilha.Screen
+                    name="Cadastro"
+                    component={Cadastro}
+                    options={{ title: 'Boas-vindas' }}
+                />
 
+
+                <Pilha.Screen
+                    name="Pix"
+                    component={Pix}
+                    options={{ title: false, headerShown: false }}
+                />
                 <Pilha.Screen
                     name="NavBar"
                     component={NavBar}
