@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Button, Alert } from 'react-native';
 import Botao from '../componentes/Button';
-import axios from 'axios';
+import axios, { Axios } from 'axios';
 
 export default function Cadastro({ navigation }) {
   const [cpf, setCpf] = useState('');
@@ -11,6 +11,7 @@ export default function Cadastro({ navigation }) {
   const [telefone, setTelefone] = useState('');
   const [senha, setSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
+  const [token, setToken] = useState('');
   const [passo, setPasso] = useState(1);
 
 
@@ -32,7 +33,7 @@ export default function Cadastro({ navigation }) {
     if (!cpf) {
       Alert.alert('Preencha o campo cpf')
     }
-    else if (cpf.length < 11){
+    else if (cpf.length < 11) {
       Alert.alert('CPF inválido')
     }
     else {
@@ -54,57 +55,46 @@ export default function Cadastro({ navigation }) {
     if (!senha) {
       Alert.alert('Preencha o campo senha')
     }
-    else if(senha.length < 6){
+    else if (senha.length < 6) {
       Alert.alert('Senha inválida, digite 6 números')
     }
-    else if(confirmarSenha.length < 6){
+    else if (confirmarSenha.length < 6) {
       Alert.alert('As senhas não conferem')
-      
+
     }
-    else if(confirmarSenha != senha){
+    else if (confirmarSenha != senha) {
       Alert.alert('As senhas não conferem')
-      
+
     }
-    else{
-    navigation.navigate('Home')
-    criarConta()
+    else {
+      criarConta()
+      navigation.navigate('Home')
     }
   }
 
+  const criarConta = (nome, email, cpf, datanascimento, telefone, senha) => {
+    axios.post('http://127.0.0.1:8000/auth/users/',
+      {
+        nome: nome,
+        email: email,
+        cpf: cpf,
+        datanascimento: datanascimento,
+        celular: telefone,
+        password: senha
+      })
+      .then((res) => {
+        Alert.alert(res)
+        axios.post('http://127.0.0.1:8000/auth/jwt/create', {
+          cpf:cpf,
+          password:senha
+        }).then((res) =>{
+          setToken(JSON.stringify(res.data))
+          navigation.navigate('Home')
+        })
+       
 
-  // const storageRef = ref(
-  //   storage,
-  //   `images/${nome.replace(/ +/g, '') + '_' + image.name}`
-  // )
-  // const uploadTask = uploadBytesResumable(storageRef, file)
+      })
 
-  // uploadTask.on('state_changed', snapshot => {
-  //   const progress = Math.round(
-  //     (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-  //   )
-  //   setTimeout(() => {
-  //     setProgressoPercent(progress), 1000
-  //   })
-  // })
-
-  // function Calculo(){
-  //   var data = datanascimento
-
-  // }
-
-
-  const criarConta = (nome, email, cpf, datanascimento, telefone, senha) =>{
-    axios.post('http://10.109.72.36:8000/auth/users/',
-    {
-      nome: nome,
-      email: email,
-      cpf: cpf,
-      datanascimento: datanascimento,
-      celular: telefone,
-      password: senha
-    }).then((res)=>{
-      Alert.alert(res)
-    })
   }
 
 
@@ -124,7 +114,7 @@ export default function Cadastro({ navigation }) {
             <View className="flex w-[100%] items-center">
               <TextInput className="w-[80%] mb-12 h-12 bg-slate-50 rounded-lg" placeholder="Digite o seu nome" keyboardType="default" onChangeText={(e) => setNome(e)} />
               <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="Digite a sua data de nascimento" keyboardType="phone-pad" onChangeText={(e) => setDatanascimento(e)} />
-              <Botao evento={() => upload()} nomeBotao={"Continuar"}/>
+              <Botao evento={() => upload()} nomeBotao={"Continuar"} />
             </View>
           </View>
         </View>
@@ -142,7 +132,7 @@ export default function Cadastro({ navigation }) {
               </View>
               <View className="flex w-[100%] items-center">
                 <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="Digite o seu CPF" maxLength={11} keyboardType="phone-pad" onChangeText={(e) => setCpf(e)} />
-                <Botao evento={() => upload2()} nomeBotao={"Continuar"}/>
+                <Botao evento={() => upload2()} nomeBotao={"Continuar"} />
               </View>
             </View>
           </View>
@@ -165,8 +155,8 @@ export default function Cadastro({ navigation }) {
                 </View>
               </View>
             </View>
-              :
-              passo == 5?
+            :
+            passo == 5 ?
               <View className="w-screen h-screen bg-black">
                 <View className="w-full pt-24 flex-1 items-center">
                   <View className="flex text-center items-center justify-center w-[90%]">
@@ -180,7 +170,7 @@ export default function Cadastro({ navigation }) {
                   <View className="flex w-[100%] items-center">
                     <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="Digite a sua senha" maxLength={6} keyboardType="phone-pad" secureTextEntry={true} onChangeText={(e) => setSenha(e)} />
                     <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="confirmar senha" maxLength={6} keyboardType="phone-pad" onChangeText={(e) => setConfirmarSenha(e)} />
-                    <Botao evento={() => upload4() } nomeBotao={"Finalizar Cadastro"}/>
+                    <Botao evento={() => upload4()} nomeBotao={"Finalizar Cadastro"} />
                   </View>
                 </View>
               </View>

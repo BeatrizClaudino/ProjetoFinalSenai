@@ -58,14 +58,14 @@ export default function Routers() {
         <NavigationContainer>
             <Pilha.Navigator>
                 <Pilha.Screen
-                    name="Home"
-                    component={Home}
-                    options={{ title: false, headerShown: false }}
-                />
-                <Pilha.Screen
                     name="Cadastro"
                     component={Cadastro}
                     options={{ title: 'Boas-vindas' }}
+                />
+                <Pilha.Screen
+                    name="Home"
+                    component={Home}
+                    options={{ title: false, headerShown: false }}
                 />
 
 

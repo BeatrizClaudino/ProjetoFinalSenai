@@ -7,6 +7,7 @@ import Cell from '../../assets/cell.png';
 import Transferencias from '../../assets/transferencia.png'
 import Card from '../../assets/card.png';
 import Header1 from '../componentes/Header'
+import { ScrollView } from 'react-native';
 
 export default function Home({navigation}) {
     const [saldo, setSaldo] = useState('')
@@ -19,7 +20,7 @@ export default function Home({navigation}) {
     }
 
     return (
-        <View className="w-screen h-screen">
+        <ScrollView className="flex-1">
             <Header1/>
             <View className="flex w-screen pt-5">
                 <View className="flex flex-row justify-evenly h-20">
@@ -60,7 +61,11 @@ export default function Home({navigation}) {
                         <Menu textoFuncao='Recarga' imagem={Cell} />
                     </View>
                 </View>
+                <View className="h-80 bg-slate-300">
+
+                </View>
             </View>
-        </View>
+      
+        </ScrollView>
     )
 }
