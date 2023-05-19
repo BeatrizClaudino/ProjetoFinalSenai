@@ -58,22 +58,22 @@ export default function Routers() {
         <NavigationContainer>
             <Pilha.Navigator>
                 <Pilha.Screen
-                    name="Cadastro"
-                    component={Cadastro}
-                    options={{ title: 'Boas-vindas' }}
+                    name="Pix"
+                    component={Pix}
+                    options={{ title: false, headerShown: false }}
                 />
                 <Pilha.Screen
                     name="Home"
                     component={Home}
                     options={{ title: false, headerShown: false }}
                 />
-
-
                 <Pilha.Screen
-                    name="Pix"
-                    component={Pix}
-                    options={{ title: false, headerShown: false }}
+                    name="Cadastro"
+                    component={Cadastro}
+                    options={{ title: 'Boas-vindas' }}
                 />
+
+
                 <Pilha.Screen
                     name="NavBar"
                     component={NavBar}

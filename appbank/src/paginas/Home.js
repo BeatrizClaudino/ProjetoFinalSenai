@@ -9,19 +9,19 @@ import Card from '../../assets/card.png';
 import Header1 from '../componentes/Header'
 import { ScrollView } from 'react-native';
 
-export default function Home({navigation}) {
+export default function Home({ navigation }) {
     const [saldo, setSaldo] = useState('')
 
     const saldoAtual = () => {
         setSaldo(saldo)
     }
-    const teste = () =>{
+    const teste = () => {
         navigation.navigate('Pix')
     }
 
     return (
         <ScrollView className="flex-1">
-            <Header1/>
+            <Header1 />
             <View className="flex w-screen pt-5">
                 <View className="flex flex-row justify-evenly h-20">
                     <Menu textoFuncao='Pix' imagem={Pix} evento={teste} />
@@ -29,14 +29,17 @@ export default function Home({navigation}) {
                     <Menu textoFuncao='Transferência' imagem={Transferencias} />
                     <Menu textoFuncao='Recarga' imagem={Cell} />
                 </View>
-                <View className="flex items-center w-screen pt-6 pb-6" >
-                    <View className="flex flex-row items-center justify-center space-x-7 bg-[#bfd3e0] w-[80%] h-11 rounded-full">
-                        <Image source={Card} />
-                        <Text className="">
-                            Meus Cartões
-                        </Text>
+                <TouchableOpacity>
+                    <View className="flex items-center w-screen pt-6 pb-6" >
+                        <View className="flex flex-row items-center justify-center space-x-7 bg-[#bfd3e0] w-[80%] h-11 rounded-full">
+                            <Image source={Card} />
+
+                            <Text className="">
+                                Meus Cartões
+                            </Text>
+                        </View>
                     </View>
-                </View>
+                </TouchableOpacity>
                 <View className="flex items-center justify-center w-screen h-48 border-t-2 border-b-2 border-[#dfe5e7]">
                     <View className="flex justify-center w-[80%] h-[100%]">
                         <Text className="text-[22px] pb-3">
@@ -65,7 +68,7 @@ export default function Home({navigation}) {
 
                 </View>
             </View>
-      
+
         </ScrollView>
     )
 }

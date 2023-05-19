@@ -12,9 +12,10 @@ export default function Cadastro({ navigation }) {
   const [senha, setSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
   const [token, setToken] = useState('');
+  const [dataCorreta, setDataCorreta] = useState('')
   const [passo, setPasso] = useState(1);
 
-
+  
   //PARA REALIZAR O UPLOAD TODAS AS CONDIÇÕES DEVEM SER ATENDIDAS
   const upload = () => {
     if (!nome) {
@@ -26,6 +27,7 @@ export default function Cadastro({ navigation }) {
       return
     }
     else {
+      
       setPasso(2)
     }
   }
@@ -56,7 +58,7 @@ export default function Cadastro({ navigation }) {
       Alert.alert('Preencha o campo senha')
     }
     else if (senha.length < 8) {
-      Alert.alert('Senha inválida, digite 6 números')
+      Alert.alert('Senha inválida, digite 8 números')
     }
     else if (confirmarSenha.length < 8) {
       Alert.alert('As senhas não conferem')
@@ -67,24 +69,27 @@ export default function Cadastro({ navigation }) {
     }
     else {
       criarConta()
+      
     }
   }
 
   const criarConta = () => {
+    var data = datanascimento.split('/')
+      let dataCorreta = data[2] + "-" + data[1] + "-" + data[0] 
+      alert(dataCorreta)
     alert('Entrou mermao')
-    alert(datanascimento)
-    axios.post('http://192.168.0.104:8000/auth/users/',
+    alert("aaaaaa" + dataCorreta)
+    axios.post('http://10.109.72.36:8000/auth/users/',
       {
         nome: nome,
         email: email,
         cpf: cpf,
-        data_nascimento: "1990-02-03",
+        data_nascimento: dataCorreta,
         celular: telefone,
         password: senha
       })
       .then((res) => {
-        Alert.alert(res)
-        axios.post('http://192.168.0.104:8000/auth/jwt/create', {
+        axios.post('http://10.109.72.36:8000/auth/jwt/create', {
           cpf:cpf,
           password:senha
         }).then((res) =>{
@@ -165,8 +170,8 @@ export default function Cadastro({ navigation }) {
                     </Text>
                   </View>
                   <View className="flex w-[100%] items-center">
-                    <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="Digite a sua senha" maxLength={8} keyboardType="phone-pad" secureTextEntry={true} onChangeText={(e) => setSenha(e)} />
-                    <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="confirmar senha" maxLength={8} keyboardType="phone-pad" onChangeText={(e) => setConfirmarSenha(e)} />
+                    <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="Digite a sua senha" secureTextEntry={true} maxLength={8} keyboardType="phone-pad" onChangeText={(e) => setSenha(e)} />
+                    <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="confirmar senha" secureTextEntry={true} maxLength={8} keyboardType="phone-pad" onChangeText={(e) => setConfirmarSenha(e)} />
                     <Botao evento={() => upload4()} nomeBotao={"Finalizar Cadastro"} />
                   </View>
                 </View>
