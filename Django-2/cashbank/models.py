@@ -6,10 +6,6 @@ from random import randint
 
 
 class CustomUserManager(BaseUserManager):
-    """
-    Custom user model manager where email is the unique identifiers
-    for authentication instead of usernames.
-    """
     def create_user(self, email, password, **extra_fields):
         num = ''
         lista=[]
@@ -21,23 +17,20 @@ class CustomUserManager(BaseUserManager):
         
         for i in range(0, 5):
             num = (randint(0,9))
-            lista.append(num)
+            lista.append(num) 
         numero = ("".join(map(str, lista)))
         user.set_password(password)
         user.save()
-        
-        #pegar o token e obter o id do usuário a partir do token
-        #user_id
-        #AccessToken(token)
-        # cliente = Cliente.objects.get(id=user_id)
-        #blz encontrei o cliente, agora vou criar o cartão
-        
-        # Cartao.objects.create(fkCliente=cliente, numero=gerar random, validade=11/25, codigoSeguranca=123)
-        
-        #cria um objeto de conta 
         Conta.objects.create(fk_cliente=user,agencia='200',numero=numero, tipo='Corrente', limite=2000, ativa=True)
+        #pegar o token e obter o id do usuário a partir do token
+        token = token.objects.get(user=user)
+        
         
         return user
+        
+       
+        
+       
     def create_superuser(self, email, password, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
@@ -68,7 +61,7 @@ class Cliente(AbstractUser):
     objects = CustomUserManager()
 
 class Conta(models.Model):
-    fk_cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    fk_cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT)
     agencia = models.CharField(max_length=10)
     numero = models.CharField(max_length=25)
     tipo = models.CharField(max_length=20)
@@ -77,7 +70,7 @@ class Conta(models.Model):
     
 
 class Endereco(models.Model):
-    fk_cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    fk_cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT)
     logradouro = models.CharField(max_length=100)
     bairro = models.CharField(max_length=75)
     cidade = models.CharField(max_length=75)
@@ -90,3 +83,20 @@ class Endereco(models.Model):
     class Meta:
         verbose_name_plural = "Endereço"
 
+class Cartao(models.Model):
+    conta_cartao = models.ForeignKey(Conta, on_delete=models.DO_NOTHING)
+    numero_cartao = models.CharField(max_length=20)
+    cvv = models.IntegerField()
+    data_vencimento = models.DateField()
+    bandeira = models.CharField(max_length=20)
+    nome_titular_cartao = models.CharField(max_length=100)
+    cartao_ativo = models.BooleanField()
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["numero_cartao"],
+                name="unique_numero_cartao",
+            )
+        ]
+        verbose_name_plural = "Cartao"
