@@ -1,0 +1,11 @@
+    axios.post('http://127.0.0.1:8000/auth/jwt/create',{
+      username: login,
+      password: senha
+    }).then((res)=>{
+      console.log(res)
+      localStorage.setItem("Token",JSON.stringify({acess:res.data.access,refresh:res.data.refresh}))
+      localStorage.setItem("dados", JSON.stringify({login:login,senha:senha}))
+      setLogado(true)
+    }).catch((erro)=>{
+      console.log(erro)
+    })
