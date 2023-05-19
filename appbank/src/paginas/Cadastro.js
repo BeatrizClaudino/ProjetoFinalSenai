@@ -55,49 +55,46 @@ export default function Cadastro({ navigation }) {
     if (!senha) {
       Alert.alert('Preencha o campo senha')
     }
-    else if (senha.length < 6) {
+    else if (senha.length < 8) {
       Alert.alert('Senha inválida, digite 6 números')
     }
-    else if (confirmarSenha.length < 6) {
+    else if (confirmarSenha.length < 8) {
       Alert.alert('As senhas não conferem')
 
     }
     else if (confirmarSenha != senha) {
       Alert.alert('As senhas não conferem')
-
     }
     else {
       criarConta()
-      navigation.navigate('Home')
     }
   }
 
-  const criarConta = (nome, email, cpf, datanascimento, telefone, senha) => {
-    axios.post('http://127.0.0.1:8000/auth/users/',
+  const criarConta = () => {
+    alert('Entrou mermao')
+    alert(datanascimento)
+    axios.post('http://192.168.0.104:8000/auth/users/',
       {
         nome: nome,
         email: email,
         cpf: cpf,
-        datanascimento: datanascimento,
+        data_nascimento: "1990-02-03",
         celular: telefone,
         password: senha
       })
       .then((res) => {
         Alert.alert(res)
-        axios.post('http://127.0.0.1:8000/auth/jwt/create', {
+        axios.post('http://192.168.0.104:8000/auth/jwt/create', {
           cpf:cpf,
           password:senha
         }).then((res) =>{
           setToken(JSON.stringify(res.data))
           navigation.navigate('Home')
         })
-       
-
+      }).catch((err) => {
+        console.error(err)
       })
-
   }
-
-
   return (
     <>
       {passo == 1 ?
@@ -168,8 +165,8 @@ export default function Cadastro({ navigation }) {
                     </Text>
                   </View>
                   <View className="flex w-[100%] items-center">
-                    <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="Digite a sua senha" maxLength={6} keyboardType="phone-pad" secureTextEntry={true} onChangeText={(e) => setSenha(e)} />
-                    <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="confirmar senha" maxLength={6} keyboardType="phone-pad" onChangeText={(e) => setConfirmarSenha(e)} />
+                    <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="Digite a sua senha" maxLength={8} keyboardType="phone-pad" secureTextEntry={true} onChangeText={(e) => setSenha(e)} />
+                    <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="confirmar senha" maxLength={8} keyboardType="phone-pad" onChangeText={(e) => setConfirmarSenha(e)} />
                     <Botao evento={() => upload4()} nomeBotao={"Finalizar Cadastro"} />
                   </View>
                 </View>

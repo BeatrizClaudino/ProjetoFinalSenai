@@ -22,7 +22,7 @@ export default function Login() {
         }
     }
     const enter = async () => {
-        await axios.post('http://127.0.0.1:8000/auth/jwt/create', {
+        await axios.post('http://192.168.0.104:8000/auth/jwt/create', {
             cpf: cpf,
             password: password,
         }).then((resposta) => {
