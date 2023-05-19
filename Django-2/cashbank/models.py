@@ -56,14 +56,14 @@ class Cliente(AbstractUser):
     cpf = models.CharField(max_length=11, unique=True)
     email = models.EmailField(null=False, unique=True)
     data_nascimento = models.DateField()
-    imagem = models.ImageField(upload_to="foto_users")
+    # imagem = models.ImageField(upload_to="foto_users")
     
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     
     USERNAME_FIELD = 'cpf'
-    REQUIRED_FIELDS = ['nome', 'celular', 'email', 'data_nascimento', 'imagem']
+    REQUIRED_FIELDS = ['nome', 'celular', 'email', 'data_nascimento']
     
     objects = CustomUserManager()
 

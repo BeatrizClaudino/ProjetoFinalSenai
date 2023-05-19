@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-5dk_1j9*s%fau5jhw7r!n=!+*(qp7tonihg6!^^12&)(ny1@6&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -71,11 +71,14 @@ TEMPLATES = [
         },
     },
 ]
+#PEERMITE QUE TODOS OS IPS FAÇAM REQUISIÇÃO NO BACK
+CORS_ALLOWED_ALL_ORIGIN = True
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    'http://127.0.0.1:5137'
-]
+# CORS_ALLOWED_ORIGINS = [
+
+#     # "http://localhost:5173",
+#     # 'http://127.0.0.1:5137'
+# ]
 
 WSGI_APPLICATION = 'banco.wsgi.application'
 
