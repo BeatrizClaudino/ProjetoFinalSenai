@@ -8,32 +8,19 @@ class CadastroclienteSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Cliente
         #tudo que tá aqui dentro do fields é pra ser convertido e enviado para o banco de dados
-        fields=['id', 'nome', 'cpf', 'email', 'data_nascimento', 'celular', 'senha']
+        fields=['user_id', 'username', 'cpf', 'email', 'data_nascimento', 'celular', 'password']
 
-
-class EnderecoSerializer(serializers.ModelSerializer):
-    numCartao = []
-
-    for i in range(0, 12):
-        num = (randint(0,9))
-        numCartao.append(num)
-        
-
+class EnderecoSerializer(serializers.ModelSerializer): 
     class Meta: 
         model = Endereco
         fields = ['id', 'logradouro', 'bairro', 'cidade', 'uf', 'cep']
-        # permission_classes = (IsAuthenticated, )
-        # queryset = Cliente.objects.get.all()
-        # serializer_class = CadastroclienteSerializer
 
-        # Cartao.objects.create(fkCliente=Cliente, numero='212')
+class ContaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Conta
+        fields = ['agencia', 'numero', 'tipo', 'limite', 'ativa', 'data_criacao']
 
-
-#user_id
-        #AccessToken(token)
-        # cliente = Cliente.objects.get(id=user_id)
-        #blz encontrei o cliente, agora vou criar o cartão
-        
-        # Cartao.objects.create(fkCliente=cliente, numero=gerar random, validade=11/25, codigoSeguranca=123)
-        
-        #cria um objeto de conta 
+class CartaoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cartao
+        fields = ['conta_cartao', 'numero_cartao', 'cvv', 'data_vencimento', 'bandeira', '', 'nome_titular_cartao', 'cartao_ativo']
