@@ -45,8 +45,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
     "corsheaders.middleware.CorsMiddleware",
+    'django.contrib.sessions.middleware.SessionMiddleware',
     "django.middleware.common.CommonMiddleware",
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -72,13 +72,13 @@ TEMPLATES = [
     },
 ]
 #PEERMITE QUE TODOS OS IPS FAÇAM REQUISIÇÃO NO BACK
-CORS_ALLOWED_ALL_ORIGIN = True
+# CORS_ALLOWED_ALL_ORIGIN = True
 
-# CORS_ALLOWED_ORIGINS = [
-
-#     # "http://localhost:5173",
-#     # 'http://127.0.0.1:5137'
-# ]
+CORS_ALLOWED_ORIGINS = [
+    "http://192.168.0.104:8000"
+    # "http://localhost:5173",
+    # 'http://127.0.0.1:5137'
+]
 
 WSGI_APPLICATION = 'banco.wsgi.application'
 

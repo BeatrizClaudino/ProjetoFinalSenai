@@ -22,11 +22,11 @@ class EnderecoSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Endereco
         fields = ['id', 'logradouro', 'bairro', 'cidade', 'uf', 'cep']
-        permission_classes = (IsAuthenticated, )
-        queryset = Cliente.objects.get.all()
-        serializer_class = CadastroclienteSerializer
+        # permission_classes = (IsAuthenticated, )
+        # queryset = Cliente.objects.get.all()
+        # serializer_class = CadastroclienteSerializer
 
-        Cartao.objects.create(fkCliente=Cliente, numero='212')
+        # Cartao.objects.create(fkCliente=Cliente, numero='212')
 
 
 #user_id
