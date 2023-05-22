@@ -9,6 +9,7 @@ const CriarConta = ({conta}) => {
     const [datanascimento, setDatanascimento] = useState()
     const [celular, setcelular] = useState()
     const [aceita, setAceita] = useState(false)
+    const [senha, setsenha] = useState()
 
     return ( 
     <div className='w-screen h-screen dark:bg-gradient-to-t to-[#000511] from-[#1B3168]'>
@@ -23,12 +24,13 @@ const CriarConta = ({conta}) => {
             <CaixaTexto placeholder="Digite o seu E-mail" tipo="email" mudanca={e => setEmail(e.target.value)}/>
             <CaixaTexto placeholder="Digite a sua data de nascimento" tipo="date" mudanca={e => setDatanascimento(e.target.value)}/>
             <CaixaTexto quantidadeCaracteres={15} placeholder="Digite o seu telefone" tipo="tel" mudanca={e => setcelular(e.target.value)}/>
+            <CaixaTexto quantidadeCaracteres={8} placeholder="Digite a sua senha" tipo="password" mudanca={e => setsenha(e.target.value)}/>
             <div className="w-full max-w-lg dark:text-light-100">
                 <input name="inputConta" type="checkbox" value={aceita} onChange={() => setAceita(!aceita)} />
                 <label>Autorizo o CashBank a tratar meus dados pessoais para envio de comunicações sobre seus produtos e serviços e também estou de acordo com a</label>
             </div>
             <button onClick={() => { 
-                conta(nome, email, cpf, datanascimento, celular)
+                conta(nome, email, cpf, datanascimento, celular, senha)
                 // navigate('/')
                 }} className='bg-[#6936F5] w-80 h-14 rounded-2xl disabled:opacity-50' type={'button'} disabled={!aceita}> Logar</button>
 
