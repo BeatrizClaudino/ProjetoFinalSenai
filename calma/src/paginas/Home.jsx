@@ -9,9 +9,9 @@ import { Link } from 'react-router-dom';
 
 const Home = () => {
     return (
-        <div className='w-screen dark:bg-gradient-to-t to-[#000511] from-[#1B3168]'>
+        <div className='w-full dark:bg-gradient-to-t to-[#000511] from-[#1B3168]'>
             <Header />
-            <div className='flex w-screen h-[80vh] items-center justify-center'>
+            <div className='flex w-full h-[80vh] items-center justify-center'>
                 <div className='flex items-center flex-col'>
                     <div className='flex w-[50vw] flex-col justify-center items-center text-dark-100 dark:text-light-100'>
                         <label className='text-[50px]'>Mais que um banco,</label>
