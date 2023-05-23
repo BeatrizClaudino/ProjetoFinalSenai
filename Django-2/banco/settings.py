@@ -72,11 +72,14 @@ TEMPLATES = [
     },
 ]
 #PEERMITE QUE TODOS OS IPS FAÇAM REQUISIÇÃO NO BACK
-# CORS_ALLOWED_ALL_ORIGIN = True
+# CORS_ALLOWED_ORIGIN_ALLOW_ALL = True
+
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://10.109.72.36:8000",
+    "http://127.0.0.1:8000",
+    "http://192.168.0.104:8000",
     # "http://localhost:5173",
     # 'http://127.0.0.1:5137'
 ]
