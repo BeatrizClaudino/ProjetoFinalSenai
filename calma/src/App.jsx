@@ -8,7 +8,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import Teste from "./paginas/teste";
 
-const API_URL = 'http://10.109.72.36:8000/auth';
+const API_URL = 'http://192.168.0.104:8000/auth';
 
 function App() {
     const navigate = useNavigate()
@@ -30,10 +30,7 @@ function App() {
     };
 
     const criarconta = (nome, email, cpf, datanascimento, celular, senha) => {
-        var data = datanascimento.split('-')
-        // let dataCorreta = data[2] + "-" + data[1] + "-" + data[0]
-    
-        axios.post('http://10.109.72.36:8000/auth/users/', {
+        axios.post('http://192.168.0.104:8000/auth/users/', {
             username: nome,
             celular: celular,
             email: email,
@@ -42,7 +39,7 @@ function App() {
             password: senha
         }).then((res) => {
             console.log('passei awqui')
-            axios.post('http://10.109.72.36:8000/auth/jwt/create', {
+            axios.post('http://192.168.0.104:8000/auth/jwt/create', {
                 cpf: cpf,
                 password: senha
             }).then((res) => {
