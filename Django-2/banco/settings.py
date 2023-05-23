@@ -25,6 +25,8 @@ SECRET_KEY = 'django-insecure-5dk_1j9*s%fau5jhw7r!n=!+*(qp7tonihg6!^^12&)(ny1@6&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+USE_TZ = True
+
 ALLOWED_HOSTS = ['*']
 
 
@@ -41,6 +43,7 @@ INSTALLED_APPS = [
     'cashbank',
     'rest_framework',
     'djoser',
+    
 ]
 
 MIDDLEWARE = [
@@ -74,15 +77,7 @@ TEMPLATES = [
 #PEERMITE QUE TODOS OS IPS FAÇAM REQUISIÇÃO NO BACK
 # CORS_ALLOWED_ORIGIN_ALLOW_ALL = True
 
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://10.109.72.36:8000",
-    "http://127.0.0.1:8000",
-    "http://192.168.0.104:8000",
-    # "http://localhost:5173",
-    # 'http://127.0.0.1:5137'
-]
+CORS_ALLOW_ALL_ORIGINS = True
 
 WSGI_APPLICATION = 'banco.wsgi.application'
 

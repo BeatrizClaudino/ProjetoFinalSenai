@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 from random import randint
-
+from django.core.validators import MinValueValidator,MaxValueValidator
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, cpf, password, **extra_fields):
@@ -21,10 +21,7 @@ class CustomUserManager(BaseUserManager):
         numero = ("".join(map(str, lista)))
         user.set_password(password)
         user.save()
-        Conta.objects.create(fk_cliente=user,agencia='200',numero=numero, tipo='Corrente', limite=2000, ativa=True)
-        
-        
-        
+        Conta.objects.create(fk_cliente=user,agencia='200',numero=numero, tipo='Corrente', limite=10, ativa=True)
         return user
        
     def create_superuser(self, cpf, password, **extra_fields):
@@ -40,7 +37,7 @@ class CustomUserManager(BaseUserManager):
 
 class Cliente(AbstractUser):
     # username = None
-    # nome = models.CharField(max_length=255)
+    nome = models.CharField(max_length=255)
     celular = models.CharField(max_length=20, default='')
     cpf = models.CharField(max_length=11, unique=True)
     email = models.EmailField(null=False, unique=True)
@@ -81,13 +78,15 @@ class Endereco(models.Model):
         verbose_name_plural = "Endereço"
 
 class Cartao(models.Model):
-    conta_cartao = models.ForeignKey(Conta, on_delete=models.DO_NOTHING)
+    fk_conta_cartao = models.ForeignKey(Conta, on_delete=models.DO_NOTHING)
     numero_cartao = models.CharField(max_length=20)
     cvv = models.IntegerField()
     data_vencimento = models.DateField()
     bandeira = models.CharField(max_length=20)
     nome_titular_cartao = models.CharField(max_length=100)
-    cartao_ativo = models.BooleanField()
+    cartao_ativo = models.BooleanField(default=True)
+    nome_titular = models.CharField(max_length=255)
+    numero_conta = models.IntegerField(max_length=5)
     
     class Meta:
         constraints = [
@@ -97,3 +96,18 @@ class Cartao(models.Model):
             )
         ]
         verbose_name_plural = "Cartao"
+        
+class Movimentacao(models.Model):
+    TRANSFERENCIA_PIX = 'PI'
+    TRANSFERENCIA_DOC = 'DC' #TRANSFERENCIA DE CONTAS DO MESMO BANCO 
+    
+    TRANSFERENCIA_CHOICES = (
+        (TRANSFERENCIA_PIX,'PIX'),
+        (TRANSFERENCIA_DOC,'DOC'),
+    )
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name='transferencias_enviadas')
+    destinatario = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name='transferencias_recebidas')
+    dataHora = models.DateField(auto_now=True)
+    valor = models.DecimalField(max_digits=8, decimal_places=8)
+    operacao = models.CharField(max_length=2, choices=TRANSFERENCIA_CHOICES, default=TRANSFERENCIA_PIX)
+    

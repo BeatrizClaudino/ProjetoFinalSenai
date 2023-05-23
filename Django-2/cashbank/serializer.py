@@ -13,14 +13,14 @@ class CadastroclienteSerializer(serializers.ModelSerializer):
 class EnderecoSerializer(serializers.ModelSerializer): 
     class Meta: 
         model = Endereco
-        fields = ['id', 'logradouro', 'bairro', 'cidade', 'uf', 'cep']
+        fields = ['id_endereco', 'logradouro', 'bairro', 'cidade', 'uf', 'cep']
 
 class ContaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Conta
-        fields = ['agencia', 'numero', 'tipo', 'limite', 'ativa', 'data_criacao']
+        fields = ['id_conta','agencia', 'numero', 'tipo', 'limite', 'ativa', 'data_criacao']
 
 class CartaoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cartao
-        fields = ['conta_cartao', 'numero_cartao', 'cvv', 'data_vencimento', 'bandeira', '', 'nome_titular_cartao', 'cartao_ativo']
+        fields = ['id_cartao', 'numero_cartao', 'cvv', 'data_vencimento', 'bandeira', 'cartao_ativo']
