@@ -8,7 +8,7 @@ class CadastroclienteSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Cliente
         #tudo que tá aqui dentro do fields é pra ser convertido e enviado para o banco de dados
-        fields=['user_id', 'username', 'cpf', 'email', 'data_nascimento', 'celular', 'password']
+        fields=['user_id', 'nome', 'cpf', 'email', 'data_nascimento', 'celular', 'password']
 
 class EnderecoSerializer(serializers.ModelSerializer): 
     class Meta: 
@@ -24,3 +24,13 @@ class CartaoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cartao
         fields = ['id_cartao', 'numero_cartao', 'cvv', 'data_vencimento', 'bandeira', 'cartao_ativo']
+
+class MovimentacaoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Movimentacao
+        fields = ['id_movimentacao', 'dataHora', 'valor', 'operacao']
+
+class EmprestimoSerializer(serializers.Serializer):
+    class Meta:
+        model = Emprestimo
+        fields = ['id', 'dataSolicitacao', 'valorSolicitado', 'juros', 'aprovado']

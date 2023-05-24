@@ -19,6 +19,7 @@ class CustomUserManager(BaseUserManager):
             num = (randint(0,9))
             lista.append(num) 
         numero = ("".join(map(str, lista)))
+        
         user.set_password(password)
         user.save()
         Conta.objects.create(fk_cliente=user,agencia='200',numero=numero, tipo='Corrente', limite=10, ativa=True)
@@ -36,7 +37,7 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(cpf, password, **extra_fields)
 
 class Cliente(AbstractUser):
-    # username = None
+    username = None
     nome = models.CharField(max_length=255)
     celular = models.CharField(max_length=20, default='')
     cpf = models.CharField(max_length=11, unique=True)
@@ -49,7 +50,7 @@ class Cliente(AbstractUser):
     is_active = models.BooleanField(default=True)
     
     USERNAME_FIELD = 'cpf'
-    REQUIRED_FIELDS = ['username', 'celular', 'email', 'data_nascimento']
+    REQUIRED_FIELDS = ['celular', 'email', 'data_nascimento']
     
     objects = CustomUserManager()
 
@@ -86,7 +87,7 @@ class Cartao(models.Model):
     nome_titular_cartao = models.CharField(max_length=100)
     cartao_ativo = models.BooleanField(default=True)
     nome_titular = models.CharField(max_length=255)
-    numero_conta = models.IntegerField(max_length=5)
+    numero_conta = models.CharField(max_length=5)
     
     class Meta:
         constraints = [
@@ -105,9 +106,18 @@ class Movimentacao(models.Model):
         (TRANSFERENCIA_PIX,'PIX'),
         (TRANSFERENCIA_DOC,'DOC'),
     )
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name='transferencias_enviadas')
-    destinatario = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name='transferencias_recebidas')
+    cliente = models.ForeignKey(Conta, on_delete=models.CASCADE, related_name='transferencias_enviadas')
+    destinatario = models.ForeignKey(Conta, on_delete=models.CASCADE, related_name='transferencias_recebidas')
     dataHora = models.DateField(auto_now=True)
     valor = models.DecimalField(max_digits=8, decimal_places=8)
     operacao = models.CharField(max_length=2, choices=TRANSFERENCIA_CHOICES, default=TRANSFERENCIA_PIX)
+ 
+class Emprestimo(models.Model):
+    fk_conta_emprestimo = models.ForeignKey(Conta, on_delete=models.CASCADE)
+    dataSolicitacao = models.DateField(auto_now=True)
+    valorSolicitado = models.DecimalField(validators=[MinValueValidator(1,message='O preço deve ser maior que 1 real'),MaxValueValidator(20000)], max_digits=10, decimal_places=2)
+    juros = models.FloatField()
+    valorComJuros = models.FloatField()
+    aprovado = models.BooleanField(default=False)
+    
     

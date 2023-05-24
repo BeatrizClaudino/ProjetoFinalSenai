@@ -70,8 +70,7 @@ class EnderecoView(viewsets.ModelViewSet):
         for i in range(0, 12):
             num = (randint(0,9))
             numCartao.append(num)
-        
-        #
+    
         Cartao.objects.create(fk_conta_cartao=conta_atual, numero=numCartao, validade="2023-05-23", codigoSeguranca=123, bandeira="Visa", nome_titular=conta_atual.fk_cliente__nome)
     
         request.POST._mutable = True
@@ -89,10 +88,26 @@ class CartaoViewSet(viewsets.ModelViewSet):
     queryset = Cartao.objects.all()
     serializer_class = CartaoSerializer
     
-class TransferenciasView(viewsets.ModelViewSet):
+#FAZER DEPOIS 
+class MovimentacaoView(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     queryset = Movimentacao.objects.all()
-    serializer_class = TransferenciaSerializer
+    serializer_class = MovimentacaoSerializer
+    
+class EmprestimoView(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    queryset = Emprestimo.objects.all()
+    serializer_class = EmprestimoSerializer
+    
+    def create(self, request, *args, **kwargs):
+        token = request.META.get('HTTP_AUTHORIZATION', '').split(' ')[1]
+        dados = AccessToken(token)
+        usuario = dados['user_id']
+        pegar_conta = Conta.objects.get(id_user=usuario)
+        pegar_saldo = pegar_conta.limite
+        # pegar_saldo
+        return super().create(request, *args, **kwargs)
+    
         
         
         
