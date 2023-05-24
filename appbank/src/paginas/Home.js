@@ -31,10 +31,9 @@ export default function Home({ navigation }) {
                 </View>
                 <TouchableOpacity>
                     <View className="flex items-center w-screen pt-6 pb-6" >
-                        <View className="flex flex-row items-center justify-center space-x-7 bg-[#bfd3e0] w-[80%] h-11 rounded-full">
+                        <View className="flex flex-row items-center justify-center space-x-7 bg-[#D0CFFF] w-[80%] h-11 rounded-lg">
                             <Image source={Card} />
-
-                            <Text className="">
+                            <Text>
                                 Meus Cartões
                             </Text>
                         </View>

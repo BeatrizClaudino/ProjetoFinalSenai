@@ -75,13 +75,11 @@ export default function Cadastro({ navigation }) {
 
   const criarConta = () => {
     var data = datanascimento.split('/')
-      let dataCorreta = data[2] + "-" + data[1] + "-" + data[0] 
-      alert(dataCorreta)
-    alert('Entrou mermao')
-    alert("aaaaaa" + dataCorreta)
+    let dataCorreta = data[2] + "-" + data[1] + "-" + data[0] 
     axios.post('http://10.109.72.36:8000/auth/users/',
+    
       {
-        nome: nome,
+        username: nome,
         email: email,
         cpf: cpf,
         data_nascimento: dataCorreta,
@@ -103,10 +101,10 @@ export default function Cadastro({ navigation }) {
   return (
     <>
       {passo == 1 ?
-        <View className="w-screen h-screen bg-black">
+        <View className="w-screen h-screen bg-white">
           <View className="pt-24 flex-1 items-center">
             <View className="flex text-center items-center justify-center w-[80%]">
-              <Text className="text-[24px] text-[#5a5d68] pb-16">
+              <Text className="text-[24px] text-[#4a1374] pb-14">
                 Bem-vindo ao Cashbank!
               </Text>
               <Text className="text-[15px] pb-12 text-[#5a5d68] text-justify">
@@ -114,15 +112,15 @@ export default function Cadastro({ navigation }) {
               </Text>
             </View>
             <View className="flex w-[100%] items-center">
-              <TextInput className="w-[80%] mb-12 h-12 bg-slate-50 rounded-lg" placeholder="Digite o seu nome" keyboardType="default" onChangeText={(e) => setNome(e)} />
-              <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="Digite a sua data de nascimento" keyboardType="phone-pad" onChangeText={(e) => setDatanascimento(e)} />
+              <TextInput className="w-[80%] mb-12 h-14 bg-slate-100 rounded-lg" placeholder="Digite o seu nome" keyboardType="default" onChangeText={(e) => setNome(e)} />
+              <TextInput className="w-[80%] mb-16 h-14 bg-slate-100 rounded-lg" placeholder="Digite a sua data de nascimento" keyboardType="phone-pad" onChangeText={(e) => setDatanascimento(e)} />
               <Botao evento={() => upload()} nomeBotao={"Continuar"} />
             </View>
           </View>
         </View>
         :
         passo == 2 ?
-          <View className="w-screen h-screen bg-black">
+          <View className="w-screen h-screen bg-white">
             <View className="w-full pt-24 flex-1 items-center">
               <View className="flex text-center items-center justify-center w-[90%]">
                 <Text className="text-[24px] text-[#5a5d68] pb-12">
@@ -133,14 +131,14 @@ export default function Cadastro({ navigation }) {
                 </Text>
               </View>
               <View className="flex w-[100%] items-center">
-                <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="Digite o seu CPF" maxLength={11} keyboardType="phone-pad" onChangeText={(e) => setCpf(e)} />
+                <TextInput className="w-[80%] mb-16 h-12 bg-slate-100 rounded-lg" placeholder="Digite o seu CPF" maxLength={11} keyboardType="phone-pad" onChangeText={(e) => setCpf(e)} />
                 <Botao evento={() => upload2()} nomeBotao={"Continuar"} />
               </View>
             </View>
           </View>
           :
           passo == 3 ?
-            <View className="w-screen h-screen bg-black">
+            <View className="w-screen h-screen bg-white">
               <View className="w-full pt-24 flex-1 items-center">
                 <View className="flex text-center items-center justify-center w-[90%]">
                   <Text className="text-[24px] text-[#5a5d68] pb-12">
@@ -151,15 +149,15 @@ export default function Cadastro({ navigation }) {
                   </Text>
                 </View>
                 <View className="flex w-[100%] items-center">
-                  <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="Digite o seu E-mail" keyboardType="default" onChangeText={(e) => setEmail(e)} />
-                  <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="(00) 00000-0000" keyboardType="phone-pad" onChangeText={(e) => setTelefone(e)} />
+                  <TextInput className="w-[80%] mb-16 h-12 bg-slate-100 rounded-lg" placeholder="Digite o seu E-mail" keyboardType="default" onChangeText={(e) => setEmail(e)} />
+                  <TextInput className="w-[80%] mb-16 h-12 bg-slate-100 rounded-lg" placeholder="(00) 00000-0000" keyboardType="phone-pad" onChangeText={(e) => setTelefone(e)} />
                   <Botao evento={() => upload3()} nomeBotao={"Continuar"} />
                 </View>
               </View>
             </View>
             :
             passo == 5 ?
-              <View className="w-screen h-screen bg-black">
+              <View className="w-screen h-screen bg-white">
                 <View className="w-full pt-24 flex-1 items-center">
                   <View className="flex text-center items-center justify-center w-[90%]">
                     <Text className="text-[24px] text-[#5a5d68] pb-12">
@@ -170,8 +168,8 @@ export default function Cadastro({ navigation }) {
                     </Text>
                   </View>
                   <View className="flex w-[100%] items-center">
-                    <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="Digite a sua senha" secureTextEntry={true} maxLength={8} keyboardType="phone-pad" onChangeText={(e) => setSenha(e)} />
-                    <TextInput className="w-[80%] mb-16 h-12 bg-slate-50 rounded-lg" placeholder="confirmar senha" secureTextEntry={true} maxLength={8} keyboardType="phone-pad" onChangeText={(e) => setConfirmarSenha(e)} />
+                    <TextInput className="w-[80%] mb-16 h-12 bg-slate-100 rounded-lg" placeholder="Digite a sua senha" secureTextEntry={true} maxLength={8} keyboardType="phone-pad" onChangeText={(e) => setSenha(e)} />
+                    <TextInput className="w-[80%] mb-16 h-12 bg-slate-100 rounded-lg" placeholder="confirmar senha" secureTextEntry={true} maxLength={8} keyboardType="phone-pad" onChangeText={(e) => setConfirmarSenha(e)} />
                     <Botao evento={() => upload4()} nomeBotao={"Finalizar Cadastro"} />
                   </View>
                 </View>

@@ -7,6 +7,7 @@ import Home from './src/paginas/Home'
 import Login from './src/paginas/Login'
 import Cadastro from './src/paginas/Cadastro'
 import Pix from "./src/paginas/Pix";
+import TelaInicial from "./src/paginas/TelaInicial"
 
 const Pilha = createStackNavigator()
 const Nav = createBottomTabNavigator()
@@ -58,6 +59,11 @@ export default function Routers() {
         <NavigationContainer>
             <Pilha.Navigator>
                 <Pilha.Screen
+                    name="Cadastro"
+                    component={Cadastro}
+                    options={{ title: 'Boas-vindas' }}
+                />
+                <Pilha.Screen
                     name="Pix"
                     component={Pix}
                     options={{ title: false, headerShown: false }}
@@ -67,9 +73,9 @@ export default function Routers() {
                     component={Home}
                     options={{ title: false, headerShown: false }}
                 />
-                <Pilha.Screen
-                    name="Cadastro"
-                    component={Cadastro}
+                 <Pilha.Screen
+                    name="TelaInicial"
+                    component={TelaInicial}
                     options={{ title: 'Boas-vindas' }}
                 />
 

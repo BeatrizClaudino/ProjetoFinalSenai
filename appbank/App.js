@@ -4,10 +4,10 @@ import { TextInput, Text, View } from 'react-native';
 import Cadastro from './src/paginas/Cadastro'
 import Routers from './routers';
 
-function App() {
+export default function App() {
   return (
     <Routers/>
   );
 }
 
-export default withExpoSnack(App);
+// export default withExpoSnack(App);
