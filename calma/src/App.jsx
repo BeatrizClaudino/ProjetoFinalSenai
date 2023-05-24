@@ -26,9 +26,7 @@ function App() {
         } catch (error) {
             throw new Error('Falha no refresh token')
         }
-
     };
-
     const criarconta = (nome, email, cpf, datanascimento, celular, senha) => {
         axios.post('http://192.168.0.104:8000/auth/users/', {
             username: nome,

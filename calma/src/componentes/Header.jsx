@@ -9,7 +9,7 @@ const Header = ({ dados }) => {
     window.location.reload(true);
   }
   return (
-    <header className="w-screen h-20 bg-slate-200 p-5 border-gray-100 dark:bg-[#000511] flex justify-between items-center border-b-2 dark:border-[#280B4D]">
+    <header className="w-full h-20 bg-slate-200 p-5 border-gray-100 dark:bg-[#000511] flex justify-between items-center border-b-2 dark:border-[#280B4D]">
       <nav className="hidden md:block w-screen">
         <ul className="list-none flex items-center justify-center space-x-9">
           <li className="text-dark-100 dark:text-blue-50">
