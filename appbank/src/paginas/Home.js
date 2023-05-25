@@ -1,16 +1,76 @@
 import React, { useState } from 'react';
-import { View, Image, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Image, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import Menu from '../componentes/Menu';
 import Pix from '../../assets/pix.png'
 import Barras from '../../assets/codigoBarras.png';
 import Cell from '../../assets/cell.png';
 import Transferencias from '../../assets/transferencia.png'
 import Card from '../../assets/card.png';
-import Header1 from '../componentes/Header'
+import { LinearGradient } from 'expo-linear-gradient';
 import { ScrollView } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import olhoAberto from '../../assets/eye.png'
+import olhoFechado  from '../../assets/closeeye.png'
+import axios from 'axios';
+
+
+//Colocando o ip da máquina dentro de uma variável para poder utilizar no codigo todo
+export const ip = "10.109.72.36:8000"
+
+//Passando os dados que eu quero pegar do usuário
+export function useSession(navigation) {
+    const [user, setUser] = useState({
+        nome: "Carregando...",
+        conta: {
+            agencia: "Carregando...",
+            numero: "Carregando...",
+            limite: "Carregando"
+        },
+        email: "Carregando...",
+        data_nascimento: "Carregando...",
+        cpf: "Carregando..."
+    });
+
+    useFocusEffect(() => {
+        AsyncStorage.getItem("token")
+            .then(token => {
+                if (!token) {
+                    Alert.alert('Opa, parece que você não está logado!');
+                    return navigation.navigate('Login');
+                }
+                axios.get(`http://${ip}/auth/users/me`, {
+                    headers: {
+                        "Authorization": `Token ${token}`
+                    }
+                })
+            })
+            .then(res => {
+                axios.get(`http://${ip}/auth/users/me`, {
+                    headers: {
+                        "Authorization": `Token${token}`
+                    }
+                })
+                    .then(res => {
+                        axios.get(`http://${ip}/conta/${res.data.id}/`)
+                            .then(resConta => {
+                                setUser({ ...res.data, conta: { ...resConta.data } })
+                            })
+                    })
+            })
+    })
+    return { user };
+}
 
 export default function Home({ navigation }) {
-    const [saldo, setSaldo] = useState('')
+    const { user } = useSession(navigation);
+    const [exibirSaldo, setExibirSaldo] = useState(false)
+
+    //FUNÇÃO PARA FAZER LOGOUT DA CONTA
+    async function login() {
+        await AsyncStorage.removeItem("token");
+        navigation.navigate('Login')
+    }
 
     const saldoAtual = () => {
         setSaldo(saldo)
@@ -19,9 +79,38 @@ export default function Home({ navigation }) {
         navigation.navigate('Pix')
     }
 
+
+    function trocarolho() {
+        setExibirSaldo(!exibirSaldo)
+    }
+
     return (
         <ScrollView className="flex-1">
-            <Header1 />
+            <LinearGradient className="h-52" colors={['#6300B0', '#021249']}>
+                <View className="p-5 flex flex-row space-x-28">
+                    <View className="flex flex-row">
+                        <Image source={require('../../assets/User.png')} />
+                        <Text className="text-cyan-50 pt-6 pl-2 text-[15px]">Hello user</Text>
+                    </View>
+                    <View className="flex flex-row space-x-5 pt-5">
+                        <TouchableOpacity onPress={trocarolho}>
+                            <Image source={exibirSaldo ? olhoAberto : olhoFechado} />
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Image source={require('../../assets/interrogacao.png')} />
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Image source={require('../../assets/mensagem.png')} />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <View className="w-screen flex items-center">
+                    <View className="flex justify-center pl-8 bg-white w-[90%] h-14 rounded-lg">
+                        <Text>Saldo em conta</Text>
+                        <Text>{exibirSaldo ? user.conta.limite : "****"}</Text>
+                    </View>
+                </View>
+            </LinearGradient>
             <View className="flex w-screen pt-5">
                 <View className="flex flex-row justify-evenly h-20">
                     <Menu textoFuncao='Pix' imagem={Pix} evento={teste} />
@@ -67,7 +156,6 @@ export default function Home({ navigation }) {
 
                 </View>
             </View>
-
         </ScrollView>
     )
 }

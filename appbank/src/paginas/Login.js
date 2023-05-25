@@ -1,62 +1,72 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Button, Alert } from 'react-native';
+import Botao from '../componentes/Button';
+import axios, { Axios } from 'axios';
+// import {AsyncStorage} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function Login() {
+
+export const ip = "10.109.72.36:8000"
+
+export default function Login({navigation}) {
     //CONSTANTES UTILIZADAS NO DECORRER DO PROJETO E SÃO DADOS OBRIGATÓRIOS NO INPUT PELO USUÁRIO
     const [cpf, setCpf] = useState()
     const [senha, setSenha] = useState()
+    const [token, setToken] = useState('')
 
     //PARA REALIZAR O UPLOAD TODAS AS CONDIÇÕES DEVEM SER ATENDIDAS
-    const login = (e) => {
-        e.preventDefault()
-
+    const login = () => {
         if (!cpf) {
-            console.log('Preencha o campo cpf')
+            Alert.alert('Preencha o campo cpf')
             return
         }
+        else if (cpf < 11){
+            Alert.alert('CPF inválido!' )
+        }   
         else if (!senha) {
-            console.log('Preencha o campo senha')
+            Alert.alert('Preencha o campo senha')
         }
         else {
             enter()
         }
     }
     const enter = async () => {
-        await axios.post('http://192.168.0.104:8000/auth/jwt/create', {
+        const resposta = axios.post(`http://${ip}/auth/jwt/create`, {
             cpf: cpf,
-            password: password,
+            password: senha,
         }).then((resposta) => {
             console.log(resposta)
+            Alert.alert(resposta.data.access)
             setToken(resposta.data.access)
-            localStorage.setItem('token', JSON.stringify(resposta.data))
+            AsyncStorage.setItem('token', JSON.stringify(resposta.data))
             navigation.navigate('Home')
         })
             .catch((erro) => {
-                if (erro?.response?.data?.message) {
-                    alert(erro.response.data.message)
-                    console.log('console', erro.response.data.message)
-                } else {
-                    alert('Aconteceu um erro inesperado ao afetuar o seu login! Entre em contato com o suporte!')
-                }
+                Alert.alert(erro + "errinho")
+                // if (erro?.response?.data?.message) {
+                //     alert(erro.response.data.message)
+                //     console.log('console', erro.response.data.message)
+                // } else {
+                //     alert('Aconteceu um erro inesperado ao afetuar o seu login! Entre em contato com o suporte!')
+                // }
             })
     }
 
     //=================== O FRONT END SE INICIA AQUI ====================
     return (
         <View className="w-screen h-screen bg-white">
-            <View>
-                <Text className="font-serif">
-                    Agora precisamos das suas informações pessoais
-                </Text>
-                <TextInput
-                    placeholder='Nome completo'
-                    value={nome}
-                    onChangeText={e => {
-                        setNome(e)
-                    }}>
-                </TextInput>
+          <View className="pt-24 flex-1 items-center">
+            <View className="flex text-center items-center justify-center w-[80%]">
+              <Text className="text-[24px] text-[#4a1374] pb-14">
+                CashBank 
+              </Text>
             </View>
-
-        </View >
+            <View className="flex w-[100%] items-center">
+              <TextInput className="w-[80%] mb-12 h-14 bg-slate-100 rounded-lg" placeholder="000.000.000-01" keyboardType="phone-pad" onChangeText={(e) => setCpf(e)} />
+              <TextInput className="w-[80%] mb-16 h-14 bg-slate-100 rounded-lg" placeholder="password" keyboardType="phone-pad" onChangeText={(e) => setSenha(e)} />
+              <Botao evento={() => login()} nomeBotao={"Login"} />
+            </View>
+          </View>
+        </View>
     );
 }

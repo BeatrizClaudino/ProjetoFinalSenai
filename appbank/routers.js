@@ -53,11 +53,18 @@ function NavBar() {
 //CRIANDO AS ROTAS DA APLICAÇÃO
 export default function Routers() {
     return (
-        // <View>
-        //     aaaaaa
-        // </View>
         <NavigationContainer>
             <Pilha.Navigator>
+                <Pilha.Screen
+                    name="Login"
+                    component={Login}
+                    options={{ title: false }}
+                />
+                <Pilha.Screen
+                    name="Home"
+                    component={Home}
+                    options={{ title: false, headerShown: false }}
+                />
                 <Pilha.Screen
                     name="Cadastro"
                     component={Cadastro}
@@ -66,11 +73,6 @@ export default function Routers() {
                 <Pilha.Screen
                     name="Pix"
                     component={Pix}
-                    options={{ title: false, headerShown: false }}
-                />
-                <Pilha.Screen
-                    name="Home"
-                    component={Home}
                     options={{ title: false, headerShown: false }}
                 />
                  <Pilha.Screen
@@ -87,11 +89,6 @@ export default function Routers() {
                 />
 
 
-                <Pilha.Screen
-                    name="Login"
-                    component={Login}
-                    options={{ title: false }}
-                />
             </Pilha.Navigator>
         </NavigationContainer>
     )

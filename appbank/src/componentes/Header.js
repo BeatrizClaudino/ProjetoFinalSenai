@@ -5,12 +5,7 @@ import olhoFechado  from '../../assets/closeeye.png'
 import { LinearGradient } from 'expo-linear-gradient';
 
 const Header1 = props =>{
-    const [exibirSaldo, setExibirSaldo] = useState(false)
-    const [saldo, setSaldo] = useState('3000')
-
-    function trocarolho(){
-        setExibirSaldo(!exibirSaldo)
-    }
+    
     return (
         <LinearGradient className="h-52" colors={['#6300B0', '#021249']}>
         <View className="p-5 flex flex-row space-x-28">
