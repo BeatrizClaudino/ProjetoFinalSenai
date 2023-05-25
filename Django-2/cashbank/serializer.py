@@ -18,7 +18,7 @@ class EnderecoSerializer(serializers.ModelSerializer):
 class ContaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Conta
-        fields = ['id_conta','agencia', 'numero', 'tipo', 'limite', 'ativa', 'data_criacao']
+        fields = ['id','agencia', 'numero', 'tipo', 'limite', 'ativa']
 
 class CartaoSerializer(serializers.ModelSerializer):
     class Meta:

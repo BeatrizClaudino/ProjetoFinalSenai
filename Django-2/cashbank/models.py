@@ -50,7 +50,7 @@ class Cliente(AbstractUser):
     is_active = models.BooleanField(default=True)
     
     USERNAME_FIELD = 'cpf'
-    REQUIRED_FIELDS = ['celular', 'email', 'data_nascimento']
+    REQUIRED_FIELDS = ['nome', 'celular', 'email', 'data_nascimento']
     
     objects = CustomUserManager()
 
@@ -63,7 +63,6 @@ class Conta(models.Model):
     ativa = models.BooleanField(default=True)   
     # data_criacao = models.DateTimeField(auto_now_add=True)
     
-
 class Endereco(models.Model):
     fk_cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT)
     logradouro = models.CharField(max_length=100)

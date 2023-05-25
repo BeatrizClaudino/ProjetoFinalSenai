@@ -36,20 +36,21 @@ class ListarClientes(viewsets.ModelViewSet):
 class ContaCreateView(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     queryset = Conta.objects.all()
-    serializer = ContaSerializer()
+    serializer_class = ContaSerializer
     
-    def get_queryset(self):
-        querryset = Conta.objects.all()
-        id_Cliente = self.request.query_params.get('user_id')
-        if id_Cliente is not None:
-            querryset= querryset.filter(user_id=id_Cliente)
-            return querryset
-        return super().get_queryset()
+    # def get_queryset(self):
+    #     querryset = Conta.objects.all()
+    #     id_Cliente = self.request.query_params.get('user_id')
+    #     if id_Cliente is not None:
+    #         querryset= querryset.filter(user_id=id_Cliente)
+    #         return querryset
+    #     return super().get_queryset()
  
 class EnderecoView(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated, )
     queryset = Endereco.objects.all()
-
+    serializer_class = EnderecoSerializer
+    
     def create(self, request, *args, **kwargs):
         numCartao = []
         cvv = []

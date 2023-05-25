@@ -1,11 +1,14 @@
 from rest_framework import routers
 from django.urls import path, include
-from .views import *
+from . import views
 
 router = routers.SimpleRouter()
-router.register('usuario', ListarClientes)
+router.register('usuario', views.ListarClientes)
+router.register('endereco', views.EnderecoView)
+router.register('conta', views.ContaCreateView)
 
-urlpatterns = [] + router.urls
+
+urlpatterns = router.urls
 
 
 
