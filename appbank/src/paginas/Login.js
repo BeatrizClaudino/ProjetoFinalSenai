@@ -20,7 +20,7 @@ export default function Login({navigation}) {
             Alert.alert('Preencha o campo cpf')
             return
         }
-        else if (cpf < 11){
+        else if (cpf.length < 11){
             Alert.alert('CPF inválido!' )
         }   
         else if (!senha) {
@@ -35,20 +35,13 @@ export default function Login({navigation}) {
             cpf: cpf,
             password: senha,
         }).then((resposta) => {
-            console.log(resposta)
             Alert.alert(resposta.data.access)
             setToken(resposta.data.access)
             AsyncStorage.setItem('token', JSON.stringify(resposta.data))
             navigation.navigate('Home')
-        })
-            .catch((erro) => {
+        }).catch((erro) => {
+                Alert.alert(erro.data.acess)
                 Alert.alert(erro + "errinho")
-                // if (erro?.response?.data?.message) {
-                //     alert(erro.response.data.message)
-                //     console.log('console', erro.response.data.message)
-                // } else {
-                //     alert('Aconteceu um erro inesperado ao afetuar o seu login! Entre em contato com o suporte!')
-                // }
             })
     }
 

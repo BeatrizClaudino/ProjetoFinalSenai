@@ -79,7 +79,7 @@ export default function Cadastro({ navigation }) {
     axios.post('http://10.109.72.36:8000/auth/users/',
     
       {
-        username: nome,
+        nome: nome,
         email: email,
         cpf: cpf,
         data_nascimento: dataCorreta,

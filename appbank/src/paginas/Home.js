@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import Menu from '../componentes/Menu';
 import Pix from '../../assets/pix.png'
@@ -18,8 +18,11 @@ import axios from 'axios';
 //Colocando o ip da máquina dentro de uma variável para poder utilizar no codigo todo
 export const ip = "10.109.72.36:8000"
 
-//Passando os dados que eu quero pegar do usuário
-export function useSession(navigation) {
+
+export default function Home({ navigation }) {
+    const [exibirSaldo, setExibirSaldo] = useState(false)
+
+    //Passando os dados que eu quero pegar do usuário
     const [user, setUser] = useState({
         nome: "Carregando...",
         conta: {
@@ -32,42 +35,54 @@ export function useSession(navigation) {
         cpf: "Carregando..."
     });
 
-    useFocusEffect(() => {
-        AsyncStorage.getItem("token")
-            .then(token => {
+    useEffect(() => {
+        const getToken = async () => {
+            try {
+                const token = await AsyncStorage.getItem("token");
+                const acessToken = JSON.parse(token).access;
+                console.log(token + "testando ....");
                 if (!token) {
                     Alert.alert('Opa, parece que você não está logado!');
                     return navigation.navigate('Login');
                 }
-                axios.get(`http://${ip}/auth/users/me`, {
+
+                axios.get(`http://${ip}/auth/users/`, {
                     headers: {
-                        "Authorization": `Token ${token}`
-                    }
-                })
-            })
-            .then(res => {
-                axios.get(`http://${ip}/auth/users/me`, {
-                    headers: {
-                        "Authorization": `Token${token}`
-                    }
-                })
-                    .then(res => {
-                        axios.get(`http://${ip}/conta/${res.data.id}/`)
-                            .then(resConta => {
-                                setUser({ ...res.data, conta: { ...resConta.data } })
-                            })
+                        "Authorization": `JWT ${acessToken}`
+                        }
                     })
-            })
-    })
-    return { user };
-}
+                    .then(res => {
+                            console.log(res.data[0].id)
+                            axios.get(`http://${ip}/app/conta/${res.data[0].id}/`, 
+                                {headers: {
+                                    "Authorization": `JWT ${acessToken}`
+                                }})
+                                .then(resConta => {
+                                    console.log(resConta);
+                                    setUser({ ...res.data, conta: { ...resConta.data } })
+                                }).catch((error) => {
+                                    console.log(error)
+                                })
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        //token experiou, fazer o refresh dele e repetir a função
 
-export default function Home({ navigation }) {
-    const { user } = useSession(navigation);
-    const [exibirSaldo, setExibirSaldo] = useState(false)
+                    });
+            } catch (error) {
+                console.log(error);
+                // Trate o erro adequadamente
+            }
+        };
+    
+        getToken();
+        return () => {
+            // Função de cleanup, se necessário
+        };
+    }, []);
 
-    //FUNÇÃO PARA FAZER LOGOUT DA CONTA
-    async function login() {
+    // FUNÇÃO PARA FAZER LOGOUT DA CONTA
+    async function logout() {
         await AsyncStorage.removeItem("token");
         navigation.navigate('Login')
     }
@@ -79,7 +94,6 @@ export default function Home({ navigation }) {
         navigation.navigate('Pix')
     }
 
-
     function trocarolho() {
         setExibirSaldo(!exibirSaldo)
     }
@@ -89,8 +103,10 @@ export default function Home({ navigation }) {
             <LinearGradient className="h-52" colors={['#6300B0', '#021249']}>
                 <View className="p-5 flex flex-row space-x-28">
                     <View className="flex flex-row">
-                        <Image source={require('../../assets/User.png')} />
-                        <Text className="text-cyan-50 pt-6 pl-2 text-[15px]">Hello user</Text>
+                        <TouchableOpacity onPress={() => (useSession())}>
+                            <Image source={require('../../assets/User.png')} />
+                        </TouchableOpacity>
+                        <Text className="text-cyan-50 pt-6 pl-2 text-[15px]">{`hello ${user.data_nascimento}`}</Text>
                     </View>
                     <View className="flex flex-row space-x-5 pt-5">
                         <TouchableOpacity onPress={trocarolho}>
@@ -107,7 +123,7 @@ export default function Home({ navigation }) {
                 <View className="w-screen flex items-center">
                     <View className="flex justify-center pl-8 bg-white w-[90%] h-14 rounded-lg">
                         <Text>Saldo em conta</Text>
-                        <Text>{exibirSaldo ? user.conta.limite : "****"}</Text>
+                    <Text>{exibirSaldo ? `R$ ${user.conta.limite}` : "****"}</Text>
                     </View>
                 </View>
             </LinearGradient>
