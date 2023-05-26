@@ -59,7 +59,7 @@ class Conta(models.Model):
     agencia = models.CharField(max_length=10)
     numero = models.CharField(max_length=25)
     tipo = models.CharField(max_length=20)
-    limite = models.DecimalField(decimal_places=4, max_digits=8)
+    limite = models.DecimalField(decimal_places=2, max_digits=8)
     ativa = models.BooleanField(default=True)   
     # data_criacao = models.DateTimeField(auto_now_add=True)
     
