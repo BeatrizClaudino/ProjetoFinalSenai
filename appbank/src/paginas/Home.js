@@ -11,17 +11,17 @@ import { ScrollView } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import olhoAberto from '../../assets/eye.png'
-import olhoFechado  from '../../assets/closeeye.png'
+import olhoFechado from '../../assets/closeeye.png'
 import axios from 'axios';
 
 
 //Colocando o ip da máquina dentro de uma variável para poder utilizar no codigo todo
-export const ip = "10.109.72.36:8000"
+export const ip = "192.168.0.104:8000"
 
 
 export default function Home({ navigation }) {
     const [exibirSaldo, setExibirSaldo] = useState(false)
-
+    const [exibirfatura, setExibirFatura] = useState(false)
     //Passando os dados que eu quero pegar do usuário
     const [user, setUser] = useState({
         nome: "Carregando...",
@@ -49,32 +49,39 @@ export default function Home({ navigation }) {
                 axios.get(`http://${ip}/auth/users/`, {
                     headers: {
                         "Authorization": `JWT ${acessToken}`
-                        }
-                    })
+                    }
+                })
                     .then(res => {
-                            console.log(res.data[0].id)
-                            axios.get(`http://${ip}/app/conta/${res.data[0].id}/`, 
-                                {headers: {
+                        console.log(res.data[0].id)
+                        axios.get(`http://${ip}/app/conta/${res.data[0].id}/`,
+                            {
+                                headers: {
                                     "Authorization": `JWT ${acessToken}`
-                                }})
-                                .then(resConta => {
-                                    console.log(resConta);
-                                    setUser({ ...res.data, conta: { ...resConta.data } })
-                                }).catch((error) => {
-                                    console.log(error)
-                                })
+                                }
+                            })
+                            .then(resConta => {
+                                console.log(resConta);
+                                setUser({ ...res.data[0], conta: resConta.data })
+                            }).catch((error) => {
+                                console.log(error)
+                            })
                     })
                     .catch(err => {
-                        console.log(err);
-                        //token experiou, fazer o refresh dele e repetir a função
+                        axios.get(`http://${ip}/auth/jwt/refresh`,{
+                            headers:{
+                                "Refresh": `JWT ${acessToken}}`
+                            }
 
+                        })
+                       
+                        //token experiou, fazer o refresh dele e repetir a função
                     });
             } catch (error) {
                 console.log(error);
                 // Trate o erro adequadamente
             }
         };
-    
+
         getToken();
         return () => {
             // Função de cleanup, se necessário
@@ -87,26 +94,30 @@ export default function Home({ navigation }) {
         navigation.navigate('Login')
     }
 
-    const saldoAtual = () => {
-        setSaldo(saldo)
-    }
+    // const saldoAtual = () => {
+    //     setSaldo(saldo)
+    // }
+    // const faturaAtual = () =>{
+    //     setFatura(fatura)
+    // }
     const teste = () => {
         navigation.navigate('Pix')
     }
 
     function trocarolho() {
         setExibirSaldo(!exibirSaldo)
+        setExibirFatura(!exibirfatura)
     }
 
     return (
         <ScrollView className="flex-1">
-            <LinearGradient className="h-52" colors={['#6300B0', '#021249']}>
+            <LinearGradient className="h-[23%]" colors={['#6300B0', '#021249']}>
                 <View className="p-5 flex flex-row space-x-28">
                     <View className="flex flex-row">
                         <TouchableOpacity onPress={() => (useSession())}>
                             <Image source={require('../../assets/User.png')} />
                         </TouchableOpacity>
-                        <Text className="text-cyan-50 pt-6 pl-2 text-[15px]">{`hello ${user.data_nascimento}`}</Text>
+                        <Text className="text-cyan-50 pt-6 pl-2 text-[19px]">{`Olá, ${user.nome}`}</Text>
                     </View>
                     <View className="flex flex-row space-x-5 pt-5">
                         <TouchableOpacity onPress={trocarolho}>
@@ -121,9 +132,9 @@ export default function Home({ navigation }) {
                     </View>
                 </View>
                 <View className="w-screen flex items-center">
-                    <View className="flex justify-center pl-8 bg-white w-[90%] h-14 rounded-lg">
-                        <Text>Saldo em conta</Text>
-                    <Text>{exibirSaldo ? `R$ ${user.conta.limite}` : "****"}</Text>
+                    <View className="flex justify-center pl-8 bg-[#EEF8FF] w-[90%] h-[55%] rounded-lg">
+                        <Text className="text-[#505050] text-[18px]">Saldo em conta</Text>
+                        <Text className="font-bold text-[20px]">{exibirSaldo ? `R$ ${user.conta.limite}` : "🟣🟣🟣🟣"}</Text>
                     </View>
                 </View>
             </LinearGradient>
@@ -136,9 +147,9 @@ export default function Home({ navigation }) {
                 </View>
                 <TouchableOpacity>
                     <View className="flex items-center w-screen pt-6 pb-6" >
-                        <View className="flex flex-row items-center justify-center space-x-7 bg-[#D0CFFF] w-[80%] h-11 rounded-lg">
+                        <View className="flex flex-row items-center justify-center space-x-7 bg-[#D0CFFF] w-[90%] h-[7vh] rounded-lg">
                             <Image source={Card} />
-                            <Text>
+                            <Text className="text-[18px]">
                                 Meus Cartões
                             </Text>
                         </View>
@@ -149,25 +160,30 @@ export default function Home({ navigation }) {
                         <Text className="text-[22px] pb-3">
                             Cartão de crédito
                         </Text>
-                        <Text className="text-base pb-2 text-[#4D4F51]">
+                        <Text className="text-base text-[16px] pb-2 text-[#4D4F51]">
                             Fatura atual
                         </Text>
-                        <Text className="text-sm h-7 bg-indigo-800 w-[30%] text-center text-white font-semibold">
-                            R$ 500,00
-                        </Text>
-                        <Text className="text-sm pt-2 text-[#4D4F51]">
+                        <View className="flex h-10 bg-indigo-800 w-[40%] text-center items-center justify-center rounded-lg">
+                            <Text className="text-white text-[16px] font-semibold ">
+                            {exibirSaldo ? "R$ 155,00" : "🟣🟣🟣🟣"}
+                            </Text>
+                        </View>
+                        <Text className="text-sm text-[16px] pt-2 text-[#4D4F51]">
                             Limite disponível de 200,00
                         </Text>
                     </View>
                 </View>
-                <View>
-                    <Text className="text-lg">Transações recentes</Text>
-                    <View className="flex flex-row justify-evenly h-20">
-                        <Menu textoFuncao='Transação pix' imagem={Pix} />
-                        <Menu textoFuncao='Pagamento boleto' imagem={Barras} />
-                        <Menu textoFuncao='Recarga' imagem={Cell} />
-                    </View>
-                </View>
+                <View className="flex items-center justify-center w-screen h-48 border-t-1 border-b-2 border-[#dfe5e7]">
+                    <View className="flex justify-center w-[80%] h-[100%]">
+                        <Text className="text-[22px] pb-3">Transações recentes</Text>
+                        <View className="flex flex-row justify-evenly h-20 pt-4">
+                            <Menu textoFuncao='Transação pix' imagem={Pix} />
+                            <Menu textoFuncao='Pagamento boleto' imagem={Barras} />
+                            <Menu textoFuncao='Recarga' imagem={Cell} />
+                            {/* <Menu textoFuncao='Transação pix' imagem={Pix}/> */}
+                        </View>
+                    </View> 
+                </View> 
                 <View className="h-80 bg-slate-300">
 
                 </View>

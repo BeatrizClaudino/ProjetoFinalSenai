@@ -4,62 +4,67 @@ import Botao from '../componentes/Button';
 import axios, { Axios } from 'axios';
 // import {AsyncStorage} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CaixaInput from '../componentes/CaixaInput';
 
+export const ip = "192.168.0.104:8000"
 
-export const ip = "10.109.72.36:8000"
+export default function Login({ navigation }) {
+  //CONSTANTES UTILIZADAS NO DECORRER DO PROJETO E SÃO DADOS OBRIGATÓRIOS NO INPUT PELO USUÁRIO
+  const [cpf, setCpf] = useState()
+  const [senha, setSenha] = useState()
+  const [token, setToken] = useState('')
 
-export default function Login({navigation}) {
-    //CONSTANTES UTILIZADAS NO DECORRER DO PROJETO E SÃO DADOS OBRIGATÓRIOS NO INPUT PELO USUÁRIO
-    const [cpf, setCpf] = useState()
-    const [senha, setSenha] = useState()
-    const [token, setToken] = useState('')
-
-    //PARA REALIZAR O UPLOAD TODAS AS CONDIÇÕES DEVEM SER ATENDIDAS
-    const login = () => {
-        if (!cpf) {
-            Alert.alert('Preencha o campo cpf')
-            return
-        }
-        else if (cpf.length < 11){
-            Alert.alert('CPF inválido!' )
-        }   
-        else if (!senha) {
-            Alert.alert('Preencha o campo senha')
-        }
-        else {
-            enter()
-        }
+  //PARA REALIZAR O UPLOAD TODAS AS CONDIÇÕES DEVEM SER ATENDIDAS
+  const login = () => {
+    if (!cpf) {
+      Alert.alert('Preencha o campo cpf')
+      return
     }
-    const enter = async () => {
-        const resposta = axios.post(`http://${ip}/auth/jwt/create`, {
-            cpf: cpf,
-            password: senha,
-        }).then((resposta) => {
-            Alert.alert(resposta.data.access)
-            setToken(resposta.data.access)
-            AsyncStorage.setItem('token', JSON.stringify(resposta.data))
-            navigation.navigate('Home')
-        }).catch((erro) => {
-                Alert.alert(erro.data.acess)
-                Alert.alert(erro + "errinho")
-            })
+    else if (cpf.length < 11) {
+      Alert.alert('CPF inválido!')
     }
+    else if (!senha) {
+      Alert.alert('Preencha o campo senha')
+    }
+    else {
+      enter()
+    }
+  }
+  const enter = async () => {
+    const resposta = axios.post(`http://${ip}/auth/jwt/create`, {
+      cpf: cpf,
+      password: senha,
+    }).then((resposta) => {
+      setToken(resposta.data.acess)
+      AsyncStorage.setItem('token', JSON.stringify(resposta.data))
+      navigation.navigate('Home')
+    }).catch((erro) => {
+      Alert.alert(erro + "errinho")
+    })
+  }
 
-    //=================== O FRONT END SE INICIA AQUI ====================
-    return (
-        <View className="w-screen h-screen bg-white">
-          <View className="pt-24 flex-1 items-center">
-            <View className="flex text-center items-center justify-center w-[80%]">
-              <Text className="text-[24px] text-[#4a1374] pb-14">
-                CashBank 
-              </Text>
-            </View>
-            <View className="flex w-[100%] items-center">
-              <TextInput className="w-[80%] mb-12 h-14 bg-slate-100 rounded-lg" placeholder="000.000.000-01" keyboardType="phone-pad" onChangeText={(e) => setCpf(e)} />
-              <TextInput className="w-[80%] mb-16 h-14 bg-slate-100 rounded-lg" placeholder="password" keyboardType="phone-pad" onChangeText={(e) => setSenha(e)} />
-              <Botao evento={() => login()} nomeBotao={"Login"} />
-            </View>
-          </View>
+  //=================== O FRONT END SE INICIA AQUI ====================
+  return (
+    <View className="w-screen h-screen bg-white">
+      <View className="pt-24 flex-1 items-center">
+        <View className="flex text-center items-center justify-center w-[80%]">
+          <Text className="text-[24px] text-[#4a1374] pb-14">
+            Faça seu Login
+          </Text>
         </View>
-    );
+        <CaixaInput texto="CPF" placeholder="000.000.000-00" tipoTeclado="phone-pad" onChangeText={(e) => setCpf(e)} />
+        <CaixaInput texto="Senha" placeholder="Digite a sua senha" tipoTeclado="default" onChangeText={(e) => setSenha(e)} />
+        <Text className="text-[15px] pb-12">
+          <View>
+          <TouchableOpacity>
+              <Text className="text-[#5203FB]">
+                Esqueci a minha senha
+              </Text>
+          </TouchableOpacity>
+          </View>
+        </Text>
+        <Botao evento={() => login()} nomeBotao={"Entrar"} />
+      </View>
+    </View>
+  );
 }

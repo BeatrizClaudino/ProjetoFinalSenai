@@ -1,13 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
-import { withExpoSnack } from 'nativewind';
-import { TextInput, Text, View } from 'react-native';
-import Cadastro from './src/paginas/Cadastro'
+import React from 'react';
 import Routers from './routers';
 
 export default function App() {
   return (
-    <Routers/>
+      <Routers/>
   );
 }
-
-// export default withExpoSnack(App);

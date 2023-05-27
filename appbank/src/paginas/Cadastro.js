@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Button, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Button, Alert, ScrollView } from 'react-native';
 import Botao from '../componentes/Button';
 import axios, { Axios } from 'axios';
+export const ip = "192.168.0.104:8000"
+import CaixaInput from '../componentes/CaixaInput';
+
 
 export default function Cadastro({ navigation }) {
   const [cpf, setCpf] = useState('');
@@ -15,7 +18,13 @@ export default function Cadastro({ navigation }) {
   const [dataCorreta, setDataCorreta] = useState('')
   const [passo, setPasso] = useState(1);
 
-  
+ 
+  const showAlert = () => {
+      Alert.alert('Sucesso', 'Conta criada com sucesso!', [
+        { text: 'OK', onPress: () => console.log('OK Pressed') }
+      ]);
+    };
+
   //PARA REALIZAR O UPLOAD TODAS AS CONDIÇÕES DEVEM SER ATENDIDAS
   const upload = () => {
     if (!nome) {
@@ -26,8 +35,7 @@ export default function Cadastro({ navigation }) {
       Alert.alert('Preencha o campo dataNascimento')
       return
     }
-    else {
-      
+    else {   
       setPasso(2)
     }
   }
@@ -68,7 +76,8 @@ export default function Cadastro({ navigation }) {
       Alert.alert('As senhas não conferem')
     }
     else {
-      criarConta()
+      showAlert()
+      navigation.navigate("Login")
       
     }
   }
@@ -76,7 +85,7 @@ export default function Cadastro({ navigation }) {
   const criarConta = () => {
     var data = datanascimento.split('/')
     let dataCorreta = data[2] + "-" + data[1] + "-" + data[0] 
-    axios.post('http://10.109.72.36:8000/auth/users/',
+    axios.post(`http://${ip}/auth/users/`,
     
       {
         nome: nome,
@@ -87,11 +96,12 @@ export default function Cadastro({ navigation }) {
         password: senha
       })
       .then((res) => {
-        axios.post('http://10.109.72.36:8000/auth/jwt/create', {
+        axios.post(`http://${ip}/auth/jwt/create`, {
           cpf:cpf,
           password:senha
         }).then((res) =>{
           setToken(JSON.stringify(res.data))
+
           navigation.navigate('Home')
         })
       }).catch((err) => {
@@ -101,64 +111,63 @@ export default function Cadastro({ navigation }) {
   return (
     <>
       {passo == 1 ?
-        <View className="w-screen h-screen bg-white">
-          <View className="pt-24 flex-1 items-center">
-            <View className="flex text-center items-center justify-center w-[80%]">
+      <ScrollView className="flex-1">
+          <View className="pt-16 flex-1 items-center">
+            <View className="flex text-center items-center justify-center w-[100%]">
               <Text className="text-[24px] text-[#4a1374] pb-14">
-                Bem-vindo ao Cashbank!
+                Crie sua conta!
               </Text>
-              <Text className="text-[15px] pb-12 text-[#5a5d68] text-justify">
+              <Text className="text-[16px] w-[90%] pb-14 text-[#5a5d68] text-justify">
                 Para iniciarmos precisaremos do seu CPF, e lembrando, caso seja menor de idade preencha com os dados de um responsável.
               </Text>
             </View>
             <View className="flex w-[100%] items-center">
-              <TextInput className="w-[80%] mb-12 h-14 bg-slate-100 rounded-lg" placeholder="Digite o seu nome" keyboardType="default" onChangeText={(e) => setNome(e)} />
-              <TextInput className="w-[80%] mb-16 h-14 bg-slate-100 rounded-lg" placeholder="Digite a sua data de nascimento" keyboardType="phone-pad" onChangeText={(e) => setDatanascimento(e)} />
+            <CaixaInput texto="Nome" placeholder="Digite o seu nome completo" tipoTeclado="default" onChangeText={(e) => setNome(e)} />
+            <CaixaInput texto="Data de nascimento" placeholder="dd/mm/yyyy" tipoTeclado="phone-pad" onChangeText={(e) => setDatanascimento(e)} />
               <Botao evento={() => upload()} nomeBotao={"Continuar"} />
             </View>
           </View>
-        </View>
+        </ScrollView>
         :
         passo == 2 ?
-          <View className="w-screen h-screen bg-white">
-            <View className="w-full pt-24 flex-1 items-center">
-              <View className="flex text-center items-center justify-center w-[90%]">
+          <ScrollView className="flex-1 bg-white">
+            <View className="w-full pt-20 flex-1 items-center">
                 <Text className="text-[24px] text-[#5a5d68] pb-12">
                   Agora precisamos do seu CPF
                 </Text>
-                <Text className="text-[15px] pb-12 text-[#5a5d68] text-justify">
-                  Suas informações estão seguras conosco!
+                <Text className="text-[16px] pb-12 pt-9 w-[92%] text-[#5a5d68] text-justify">
+                Digite seu CPF com segurança. Somos um banco confiável e protegemos suas informações pessoais 
                 </Text>
               </View>
               <View className="flex w-[100%] items-center">
-                <TextInput className="w-[80%] mb-16 h-12 bg-slate-100 rounded-lg" placeholder="Digite o seu CPF" maxLength={11} keyboardType="phone-pad" onChangeText={(e) => setCpf(e)} />
+              <CaixaInput texto="CPF" placeholder="000.000.000-00" tipoTeclado="phone-pad" onChangeText={(e) => setCpf(e)} />
                 <Botao evento={() => upload2()} nomeBotao={"Continuar"} />
               </View>
-            </View>
-          </View>
+
+            </ScrollView>
           :
           passo == 3 ?
-            <View className="w-screen h-screen bg-white">
-              <View className="w-full pt-24 flex-1 items-center">
-                <View className="flex text-center items-center justify-center w-[90%]">
-                  <Text className="text-[24px] text-[#5a5d68] pb-12">
+          <ScrollView className="flex-1 bg-white ">
+            <View className="flex items-center">
+              <View className="w-[90%] pt-16">
+                  <Text className="text-[24px] text-[#5a5d68] pb-12 text-center">
                     Em qual telefone e e-mail podemos falar com você?
                   </Text>
                   <Text className="text-[15px] pb-12 text-[#5a5d68] text-justify">
                     Será utilizado para informar sobre suas transações e novidades do nosso banco.
                   </Text>
                 </View>
-                <View className="flex w-[100%] items-center">
-                  <TextInput className="w-[80%] mb-16 h-12 bg-slate-100 rounded-lg" placeholder="Digite o seu E-mail" keyboardType="default" onChangeText={(e) => setEmail(e)} />
-                  <TextInput className="w-[80%] mb-16 h-12 bg-slate-100 rounded-lg" placeholder="(00) 00000-0000" keyboardType="phone-pad" onChangeText={(e) => setTelefone(e)} />
+                <View className="flex w-screen items-center">
+                <CaixaInput texto="E-mail" placeholder="digite o seu e-mail" tipoTeclado="default" onChangeText={(e) => setEmail(e)} />
+                <CaixaInput texto="Telefone" placeholder="(00) 00000-0000" tipoTeclado="default" onChangeText={(e) => setTelefone(e)} />
                   <Botao evento={() => upload3()} nomeBotao={"Continuar"} />
                 </View>
-              </View>
-            </View>
+                </View>
+            </ScrollView>
             :
             passo == 5 ?
-              <View className="w-screen h-screen bg-white">
-                <View className="w-full pt-24 flex-1 items-center">
+            <ScrollView className="flex-1 bg-white ">
+                <View className="w-full pt-10 flex-1 items-center">
                   <View className="flex text-center items-center justify-center w-[90%]">
                     <Text className="text-[24px] text-[#5a5d68] pb-12">
                       Estamos quase lá! Crie a sua senha.
@@ -168,15 +177,15 @@ export default function Cadastro({ navigation }) {
                     </Text>
                   </View>
                   <View className="flex w-[100%] items-center">
-                    <TextInput className="w-[80%] mb-16 h-12 bg-slate-100 rounded-lg" placeholder="Digite a sua senha" secureTextEntry={true} maxLength={8} keyboardType="phone-pad" onChangeText={(e) => setSenha(e)} />
-                    <TextInput className="w-[80%] mb-16 h-12 bg-slate-100 rounded-lg" placeholder="confirmar senha" secureTextEntry={true} maxLength={8} keyboardType="phone-pad" onChangeText={(e) => setConfirmarSenha(e)} />
+                  <CaixaInput texto="Senha" placeholder="digite a sua senha" tipoTeclado="default" onChangeText={(e) => setSenha(e)} />
+                  <CaixaInput texto="Confirme sua senha" placeholder="digite novamente a sua senha" tipoTeclado="default" onChangeText={(e) => setConfirmarSenha(e)} />
                     <Botao evento={() => upload4()} nomeBotao={"Finalizar Cadastro"} />
                   </View>
                 </View>
-              </View>
+              </ScrollView>
               :
               null
-      }
+            }
     </>
 
   )
