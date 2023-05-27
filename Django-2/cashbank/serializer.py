@@ -23,7 +23,7 @@ class ContaSerializer(serializers.ModelSerializer):
 class CartaoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cartao
-        fields = ['id_cartao', 'numero_cartao', 'cvv', 'data_vencimento', 'bandeira', 'cartao_ativo']
+        fields = ['id_cartao', 'numero_cartao', 'cvv', 'data_vencimento', 'bandeira', 'cartao_ativo', 'limite_disponivel']
 
 class MovimentacaoSerializer(serializers.ModelSerializer):
     class Meta:

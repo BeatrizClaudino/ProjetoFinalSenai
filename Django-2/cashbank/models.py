@@ -87,6 +87,7 @@ class Cartao(models.Model):
     cartao_ativo = models.BooleanField(default=True)
     nome_titular = models.CharField(max_length=255)
     numero_conta = models.CharField(max_length=5)
+    limite_disponivel = models.DecimalField(decimal_places=2, max_digits=5)
     
     class Meta:
         constraints = [
