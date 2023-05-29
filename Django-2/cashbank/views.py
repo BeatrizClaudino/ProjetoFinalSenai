@@ -102,8 +102,8 @@ class EmprestimoView(viewsets.ModelViewSet):
         dados = AccessToken(token)
         usuario = dados['user_id']
         pegar_conta = Conta.objects.get(id_user=usuario)
-        pegar_saldo = pegar_conta.limite
-        # pegar_saldo
+        
+        Emprestimo.objects.create(fk_conta_emprestimo=pegar_conta)
         return super().create(request, *args, **kwargs)
     
         

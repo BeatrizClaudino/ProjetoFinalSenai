@@ -114,8 +114,8 @@ class Movimentacao(models.Model):
  
 class Emprestimo(models.Model):
     fk_conta_emprestimo = models.ForeignKey(Conta, on_delete=models.CASCADE)
-    dataSolicitacao = models.DateField(auto_now=True)
-    valorSolicitado = models.DecimalField(validators=[MinValueValidator(1,message='O preço deve ser maior que 1 real'),MaxValueValidator(20000)], max_digits=10, decimal_places=2)
+    data_solicitacao = models.DateField(auto_now=True)
+    valor_solicitado = models.DecimalField(validators=[MinValueValidator(1,message='O preço deve ser maior que 1 real'),MaxValueValidator(20000)], max_digits=10, decimal_places=2)
     juros = models.FloatField()
     valorComJuros = models.FloatField()
     aprovado = models.BooleanField(default=False)
