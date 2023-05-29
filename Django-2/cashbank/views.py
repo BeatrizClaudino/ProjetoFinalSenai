@@ -38,6 +38,14 @@ class ContaCreateView(viewsets.ModelViewSet):
     queryset = Conta.objects.all()
     serializer_class = ContaSerializer
     
+    # def get_queryset(self):
+    #     querryset = Conta.objects.all()
+    #     id_Cliente = self.request.query_params.get('user_id')
+    #     if id_Cliente is not None:
+    #         querryset= querryset.filter(user_id=id_Cliente)
+    #         return querryset
+    #     return super().get_queryset()
+ 
 class EnderecoView(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated, )
     queryset = Endereco.objects.all()
@@ -46,7 +54,6 @@ class EnderecoView(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         numCartao = []
         cvv = []
-        limite = []
         
         token = request.META.get('HTTP_AUTHORIZATION', '').split(' ')[1]
         dados = AccessToken(token)
@@ -64,12 +71,8 @@ class EnderecoView(viewsets.ModelViewSet):
         for i in range(0, 12):
             num = (randint(0,9))
             numCartao.append(num)
-        for i in range(0, 3):
-            limite = (randint(0,9))
-            limite.append(num)
-
     
-        Cartao.objects.create(fk_conta_cartao=conta_atual, numero=numCartao, validade="2023-05-23", codigoSeguranca=123, bandeira="Visa", nome_titular=conta_atual.fk_cliente__nome, limite_disponivel=limite)
+        Cartao.objects.create(fk_conta_cartao=conta_atual, numero=numCartao, validade="2023-05-23", codigoSeguranca=123, bandeira="Visa", nome_titular=conta_atual.fk_cliente__nome)
     
         request.POST._mutable = True
         return super().create(request, *args, **kwargs)
@@ -102,8 +105,8 @@ class EmprestimoView(viewsets.ModelViewSet):
         dados = AccessToken(token)
         usuario = dados['user_id']
         pegar_conta = Conta.objects.get(id_user=usuario)
-        
-        Emprestimo.objects.create(fk_conta_emprestimo=pegar_conta)
+        pegar_saldo = pegar_conta.limite
+        # pegar_saldo
         return super().create(request, *args, **kwargs)
     
         

@@ -11,7 +11,7 @@ class CustomUserManager(BaseUserManager):
         lista=[]
         
         if not cpf:
-            raise ValueError(_("The Email must be set"))
+            raise ValueError(("The Email must be set"))
         # cpf = self.normalize_email(cpf)
         user = self.model(cpf=cpf, **extra_fields)
         
@@ -31,12 +31,13 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault("is_active", True)
 
         if extra_fields.get("is_staff") is not True:
-            raise ValueError(_("Superuser must have is_staff=True."))
+            raise ValueError(("Superuser must have is_staff=True."))
         if extra_fields.get("is_superuser") is not True:
-            raise ValueError(_("Superuser must have is_superuser=True."))
+            raise ValueError(("Superuser must have is_superuser=True."))
         return self.create_user(cpf, password, **extra_fields)
 
 class Cliente(AbstractUser):
+
     username = None
     nome = models.CharField(max_length=255)
     celular = models.CharField(max_length=20, default='')
@@ -87,7 +88,6 @@ class Cartao(models.Model):
     cartao_ativo = models.BooleanField(default=True)
     nome_titular = models.CharField(max_length=255)
     numero_conta = models.CharField(max_length=5)
-    limite_disponivel = models.DecimalField(decimal_places=2, max_digits=5)
     
     class Meta:
         constraints = [
@@ -114,8 +114,8 @@ class Movimentacao(models.Model):
  
 class Emprestimo(models.Model):
     fk_conta_emprestimo = models.ForeignKey(Conta, on_delete=models.CASCADE)
-    data_solicitacao = models.DateField(auto_now=True)
-    valor_solicitado = models.DecimalField(validators=[MinValueValidator(1,message='O preço deve ser maior que 1 real'),MaxValueValidator(20000)], max_digits=10, decimal_places=2)
+    dataSolicitacao = models.DateField(auto_now=True)
+    valorSolicitado = models.DecimalField(validators=[MinValueValidator(1,message='O preço deve ser maior que 1 real'),MaxValueValidator(20000)], max_digits=10, decimal_places=2)
     juros = models.FloatField()
     valorComJuros = models.FloatField()
     aprovado = models.BooleanField(default=False)
