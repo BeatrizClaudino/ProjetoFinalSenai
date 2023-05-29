@@ -2,51 +2,55 @@ import React, { useState } from 'react';
 import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import CaixaInput from '../componentes/CaixaInput';
 import SelectDropdown from 'react-native-select-dropdown';
+import { Picker } from '@react-native-picker/picker';
 
 export default function Emprestimo({ route }) {
   // const { user } = useSession(navigation);
   const { valor } = route.params
 
-  const [numeroParcelas, setNumeroParcelas] = useState()
-  const [taxaJuros, settaxaJuros] = useState()
+  const [parcelas, setParcelas] = useState(1);
+  const [custoParcela, setCustoParcela] = useState(0);
+  const taxa = 5 /100 
 
-  opcoes = ["1 parcela", "2 parcela", "3 parcela", "4 parcela", "5 parcela", "6 parcela"]
+  const atualizarCustoParcela = (parcelas) => {
+    var taxaParcelas = (valor / parcelas) * taxa 
+    valorComJuros = (taxaParcelas * parcelas) + (valor/parcelas)
+    setCustoParcela(valorComJuros);
+  };
 
-  const [juros, setJuros] = useState()
-  const [Valorparcelas, setValorparcelas] = useState(1);
-  const [valorComJuros, setValorComJuros] = useState()
-  const [valorTotalEmprestimo, setValorTotalEmprestimo] = useState()
-
-
-  function CalculoJuros() {
-    taxaJuros = 0.05
-    Valorparcelas = valor / numeroParcelas
-    juros = Valorparcelas * taxaJuros
-    valorComJuros = Valorparcelas + juros
-    valorTotalEmprestimo = valorComJuros * numeroParcelas
-  }
+  // function CalculoParcelas(){
+  //   var taxaParcelas = (valor/parcelas)*taxa
+  //   valorComJuros = taxaParcelas + parcelas
+  // }
+ 
   return (
     <View className="flex-1 justify-center items-center bg-purple-500">
       <Text className="text-white text-2xl mb-4">Solicitar Empréstimo</Text>
       <Text>
         Valor passado da Primeira Tela: {valor}
       </Text>
-      <SelectDropdown
-        data={opcoes}
-        onSelect={(selectedItem, index) => {
-          console.log(selectedItem, index)
-        }}
-        buttonTextAfterSelection={(selectedItem, index) => {
-          // text represented after item is selected
-          // if data array is an array of objects then return selectedItem.property to render after item is selected
-          return selectedItem
-        }}
-        rowTextForSelection={(item, index) => {
-          // text represented for each item in dropdown
-          // if data array is an array of objects then return item.property to represent item in dropdown
-          return item
-        }}
-      />
+      <View>
+  <Text>Selecione a quantidade de parcelas:</Text>
+  <Picker
+    selectedValue={parcelas}
+    onValueChange={(itemValue) => {
+      atualizarCustoParcela(itemValue);
+      setParcelas(itemValue);
+    }}
+  >
+    <Picker.Item label="Select the value"/>
+    <Picker.Item label="1x" value={1} />
+    <Picker.Item label="2x" value={2} />
+    <Picker.Item label="3x" value={3} />
+    <Picker.Item label="4x" value={4} />
+    <Picker.Item label="5x" value={5} />
+    <Picker.Item label="6x" value={6} />
+  </Picker>
+</View>
+<View>
+  <Text>{parcelas}</Text>
+  <Text>{custoParcela}</Text>
+</View>
     </View>
   );
 };
