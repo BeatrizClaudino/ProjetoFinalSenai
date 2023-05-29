@@ -9,6 +9,8 @@ import Transferencia from './src/paginas/Transferencia'
 import Login from './src/paginas/Login'
 import Cadastro from './src/paginas/Cadastro'
 import Pix from "./src/paginas/Pix";
+import Emprestimo from './src/paginas/Emprestimo';
+import Valor from './src/componentes/Valor';
 
 const Nav = createBottomTabNavigator()
 const Pilha = createStackNavigator()
@@ -47,6 +49,16 @@ export default function Routers({navigation}) {
                     options={{ title: false }}
                 />
                 <Pilha.Screen
+                    name="Home"
+                    component={Home}
+                    options={{ title: false, headerShown: false}}
+                />
+                <Pilha.Screen
+                    name="Emprestimo"
+                    component={Emprestimo}
+                    options={{ title: false, headerShown: true }}
+                />
+                <Pilha.Screen
                     name="Cadastro"
                     component={Cadastro}
                     options={{ title: false}}
@@ -57,13 +69,13 @@ export default function Routers({navigation}) {
                     options={{ title: false, headerShown: false }}
                 />
                 <Pilha.Screen
-                    name="Home"
-                    component={Home}
-                    options={{ title: false, headerShown: false}}
-                />
-                <Pilha.Screen
                     name="Pix"
                     component={Pix}
+                    options={{ title: false, headerShown: true }}
+                />
+                 <Pilha.Screen
+                    name="Valor"
+                    component={Valor}
                     options={{ title: false, headerShown: true }}
                 />
             </Pilha.Navigator>

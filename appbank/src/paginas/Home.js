@@ -40,7 +40,6 @@ export default function Home({ navigation }) {
             try {
                 const token = await AsyncStorage.getItem("token");
                 const acessToken = JSON.parse(token).access;
-                console.log(token + "testando ....");
                 if (!token) {
                     Alert.alert('Opa, parece que você não está logado!');
                     return navigation.navigate('Login');
@@ -114,7 +113,7 @@ export default function Home({ navigation }) {
             <LinearGradient className="h-[23%]" colors={['#6300B0', '#021249']}>
                 <View className="p-5 flex flex-row space-x-28">
                     <View className="flex flex-row">
-                        <TouchableOpacity onPress={() => (useSession())}>
+                        <TouchableOpacity>
                             <Image source={require('../../assets/User.png')} />
                         </TouchableOpacity>
                         <Text className="text-cyan-50 pt-6 pl-2 text-[19px]">{`Olá, ${user.nome}`}</Text>
@@ -143,7 +142,7 @@ export default function Home({ navigation }) {
                     <Menu textoFuncao='Pix' imagem={Pix} evento={teste} />
                     <Menu textoFuncao='Boleto' imagem={Barras} />
                     <Menu textoFuncao='Transferência' imagem={Transferencias} />
-                    <Menu textoFuncao='Recarga' imagem={Cell} />
+                    <Menu textoFuncao='Empréstimo' imagem={Cell} evento={() => navigation.navigate("Valor")}/>
                 </View>
                 <TouchableOpacity>
                     <View className="flex items-center w-screen pt-6 pb-6" >
