@@ -16,12 +16,13 @@ import axios from 'axios';
 
 
 //Colocando o ip da máquina dentro de uma variável para poder utilizar no codigo todo
-export const ip = "192.168.0.104:8000"
+export const ip = "10.109.72.7:8000"
 
 
 export default function Home({ navigation }) {
     const [exibirSaldo, setExibirSaldo] = useState(false)
     const [exibirfatura, setExibirFatura] = useState(false)
+    const [nome, setNome] = useState(false)
     //Passando os dados que eu quero pegar do usuário
     const [user, setUser] = useState({
         nome: "Carregando...",
@@ -50,10 +51,19 @@ export default function Home({ navigation }) {
                         "Authorization": `JWT ${acessToken}`
                     }
                 })
-                .then((res) => {
-                    console.log(res)
-
-                })
+                    .then(res => {
+                        axios.get(`http://${ip}/app/conta/${res.data[0].id}/`,
+                            {
+                                headers: {
+                                    "Authorization": `JWT ${acessToken}`
+                                }
+                            })
+                            .then(resConta => {
+                                console.log(resConta);
+                                setUser({ ...res.data[0], conta: resConta.data })
+                            }).catch((error) => {
+                                console.log(error)
+                    })})
                 .catch((erro) => {
                         axios.post(`http://${ip}/auth/jwt/refresh`, { refresh: token.refresh }) // DAR O REFRESH
                             .then((res) => {
@@ -85,7 +95,7 @@ export default function Home({ navigation }) {
 
     getToken();
     return () => {
-        // Função de cleanup, se necessário
+        setUser
     };
 }, []);
 

@@ -18,20 +18,20 @@ const Pilha = createStackNavigator()
 function NavBar() {
     return (
         <Nav.Navigator
-        screenOptions={{
-            tabBarStyle: {
-                borderTopColor: 'transparent',
-                paddingBottom: 1,
-                paddingTop: 1,
-            },
-            tabBarActiveTintColor:'#f0f',
-            tabBarInactiveTintColor: '#555',
-        }}>
-            <Nav.Screen name="Home" component={Home} 
+            screenOptions={{
+                tabBarStyle: {
+                    borderTopColor: 'transparent',
+                    paddingBottom: 1,
+                    paddingTop: 1,
+                },
+                tabBarActiveTintColor: '#f0f',
+                tabBarInactiveTintColor: '#555',
+            }}>
+            <Nav.Screen name="Home" component={Home}
                 options={{
                     headerShown: false,
-                    tabBarIcon: ({size, color})=>(
-                        <Feather name="home" size={size} color={color}/>
+                    tabBarIcon: ({ size, color }) => (
+                        <Feather name="home" size={size} color={color} />
                     )
                 }}
             />
@@ -39,7 +39,7 @@ function NavBar() {
         </Nav.Navigator>
     )
 }
-export default function Routers({navigation}) {
+export default function Routers({ navigation }) {
     return (
         <NavigationContainer>
             <Pilha.Navigator>
@@ -51,19 +51,19 @@ export default function Routers({navigation}) {
                 <Pilha.Screen
                     name="Cadastro"
                     component={Cadastro}
-                    options={{ title: false}}
+                    options={{ title: false }}
                 />
                 <Pilha.Screen
                     name="Home"
                     component={Home}
-                    options={{ title: false, headerShown: false}}
+                    options={{ title: false, headerShown: false }}
                 />
                 <Pilha.Screen
                     name="Emprestimo"
                     component={Emprestimo}
                     options={{ title: false, headerShown: true }}
                 />
-                 <Pilha.Screen
+                <Pilha.Screen
                     name="NavBar"
                     component={NavBar}
                     options={{ title: false, headerShown: false }}
@@ -73,7 +73,7 @@ export default function Routers({navigation}) {
                     component={Pix}
                     options={{ title: false, headerShown: true }}
                 />
-                 <Pilha.Screen
+                <Pilha.Screen
                     name="Valor"
                     component={Valor}
                     options={{ title: false, headerShown: true }}

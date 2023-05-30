@@ -6,12 +6,12 @@ import axios, { Axios } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CaixaInput from '../componentes/CaixaInput';
 
-export const ip = "192.168.0.104:8000"
+export const ip = "10.109.72.7:8000"
 
 export default function Login({ navigation }) {
   //CONSTANTES UTILIZADAS NO DECORRER DO PROJETO E SÃO DADOS OBRIGATÓRIOS NO INPUT PELO USUÁRIO
-  const [cpf, setCpf] = useState()
-  const [senha, setSenha] = useState()
+  const [cpf, setCpf] = useState('48066287860')
+  const [senha, setSenha] = useState('Re@ct122')
   const [token, setToken] = useState('')
 
   //PARA REALIZAR O UPLOAD TODAS AS CONDIÇÕES DEVEM SER ATENDIDAS
@@ -31,7 +31,7 @@ export default function Login({ navigation }) {
     }
   }
   const enter = async () => {
-    const resposta = axios.post(`http://${ip}/auth/jwt/create`, {
+    const resposta = axios.post(`http://${ip}/auth/jwt/create/`, {
       cpf: cpf,
       password: senha,
     }).then((resposta) => {
