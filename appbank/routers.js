@@ -49,6 +49,11 @@ export default function Routers({navigation}) {
                     options={{ title: false }}
                 />
                 <Pilha.Screen
+                    name="Cadastro"
+                    component={Cadastro}
+                    options={{ title: false}}
+                />
+                <Pilha.Screen
                     name="Home"
                     component={Home}
                     options={{ title: false, headerShown: false}}
@@ -57,11 +62,6 @@ export default function Routers({navigation}) {
                     name="Emprestimo"
                     component={Emprestimo}
                     options={{ title: false, headerShown: true }}
-                />
-                <Pilha.Screen
-                    name="Cadastro"
-                    component={Cadastro}
-                    options={{ title: false}}
                 />
                  <Pilha.Screen
                     name="NavBar"

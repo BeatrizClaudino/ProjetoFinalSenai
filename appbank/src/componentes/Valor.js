@@ -9,7 +9,7 @@ const Valor = ({ navigation }) => {
 //   const { user } = useSession(navigation);
 
   function solicitarEmprestimo() {
-    if (valor < 10 * 5) {
+    if (valor < 0 * 5) {
       Alert.alert('Sua conta não cumpre os requisitos para solicitar esse valor!');
     } else {
       navigation.navigate('Emprestimo', { valor: valor });

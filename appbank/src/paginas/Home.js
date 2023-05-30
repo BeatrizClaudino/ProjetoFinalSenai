@@ -16,7 +16,7 @@ import axios from 'axios';
 
 
 //Colocando o ip da máquina dentro de uma variável para poder utilizar no codigo todo
-export const ip = "10.109.72.7:8000"
+export const ip = "192.168.0.104:8000"
 
 
 export default function Home({ navigation }) {
@@ -50,42 +50,44 @@ export default function Home({ navigation }) {
                         "Authorization": `JWT ${acessToken}`
                     }
                 })
-                    .then(res => {
-                        console.log(res.data[0].id)
-                        axios.get(`http://${ip}/app/conta/${res.data[0].id}/`,
-                            {
-                                headers: {
-                                    "Authorization": `JWT ${acessToken}`
+                .then((res) => {
+                    console.log(res)
+
+                })
+                .catch((erro) => {
+                        axios.post(`http://${ip}/auth/jwt/refresh`, { refresh: token.refresh }) // DAR O REFRESH
+                            .then((res) => {
+                                tokenAccess = res.data.access
+                                const testeToken = {
+                                    headers: {
+                                        "Authorization": `JWT ${acessToken}`
+                                    },
                                 }
-                            })
-                            .then(resConta => {
-                                console.log(resConta);
-                                setUser({ ...res.data[0], conta: resConta.data })
-                            }).catch((error) => {
-                                console.log(error)
-                            })
-                    })
-                    .catch(err => {
-                        axios.get(`http://${ip}/auth/jwt/refresh`,{
-                            headers:{
-                                "Refresh": `JWT ${acessToken}}`
+                                console.log('oi')
+                                axios.get(`http://${ip}/auth/users/me`, testeToken)
+                                    .then((res) => {
+                                        console.log(res.data)
+                                    })
+                                    .catch((err) => {
+                                        console.log('deu ruim2', err);
+                                    })
                             }
+                            ).catch((erro) => {
+                                console.log('entrou4');
+                                console.log('errooioioioio', erro)
+                            })
+                })
+        } catch (error) {
+            console.log(error);
+            // Trate o erro adequadamente
+        }
+    };
 
-                        })
-                       
-                        //token experiou, fazer o refresh dele e repetir a função
-                    });
-            } catch (error) {
-                console.log(error);
-                // Trate o erro adequadamente
-            }
-        };
-
-        getToken();
-        return () => {
-            // Função de cleanup, se necessário
-        };
-    }, []);
+    getToken();
+    return () => {
+        // Função de cleanup, se necessário
+    };
+}, []);
 
     // FUNÇÃO PARA FAZER LOGOUT DA CONTA
     async function logout() {

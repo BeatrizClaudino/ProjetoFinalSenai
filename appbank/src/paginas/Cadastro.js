@@ -76,8 +76,7 @@ export default function Cadastro({ navigation }) {
       Alert.alert('As senhas não conferem')
     }
     else {
-      showAlert()
-      navigation.navigate("Login")
+      criarConta()
       
     }
   }
@@ -102,7 +101,8 @@ export default function Cadastro({ navigation }) {
         }).then((res) =>{
           setToken(JSON.stringify(res.data))
 
-          navigation.navigate('Home')
+          showAlert()
+          navigation.navigate("Login")
         })
       }).catch((err) => {
         console.error(err)
@@ -111,7 +111,7 @@ export default function Cadastro({ navigation }) {
   return (
     <>
       {passo == 1 ?
-      <ScrollView className="flex-1">
+      <ScrollView className="flex-1 bg-white">
           <View className="pt-16 flex-1 items-center">
             <View className="flex text-center items-center justify-center w-[100%]">
               <Text className="text-[24px] text-[#4a1374] pb-14">
