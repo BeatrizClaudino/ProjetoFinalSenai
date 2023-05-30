@@ -1,3 +1,4 @@
+import decimal
 from django.shortcuts import render
 from .models import *
 from .serializer import *
@@ -104,14 +105,16 @@ class EmprestimoView(viewsets.ModelViewSet):
         token = request.META.get('HTTP_AUTHORIZATION', '').split(' ')[1]
         dados = AccessToken(token)
         usuario = dados['user_id']
-        pegar_conta = Conta.objects.get(fk_cliente=usuario)
+        conta_atual = Conta.objects.get(id=usuario)
 
-        valor_solicitado = request.data['valorSolicitado']
-        novo_saldo = pegar_conta.limite + valor_solicitado
+        request.data['fk_conta_emprestimo'] = usuario
+        request.POST._mutable = True
+        valor_solicitado = decimal.Decimal(request.data['valorSolicitado'])
+        novo_saldo = decimal.Decimal(conta_atual.limite) + valor_solicitado
 
         print(novo_saldo)
-        pegar_conta.limite = novo_saldo
-        pegar_conta.save()
+        conta_atual.limite = novo_saldo
+        conta_atual.save()
 
         # pegar_saldo
         return super().create(request, *args, **kwargs)

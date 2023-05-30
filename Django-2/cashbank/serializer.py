@@ -33,4 +33,4 @@ class MovimentacaoSerializer(serializers.ModelSerializer):
 class EmprestimoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Emprestimo
-        fields = ['id', 'dataSolicitacao', 'valorSolicitado', 'juros', 'aprovado', 'valorTotalJuros', 'valorParcelaJuros']
+        fields = ['id', 'dataSolicitacao', 'valorSolicitado', 'juros', 'aprovado', 'valorTotalJuros', 'valorParcelaJuros', 'fk_conta_emprestimo']

@@ -121,4 +121,10 @@ class Emprestimo(models.Model):
     valorParcelaJuros = models.FloatField()
     aprovado = models.BooleanField(default=False)
     
+class Extrato(models.Model):
+    fk_extrato = models.ForeignKey(Conta, on_delete=models.CASCADE)
+    data = models.DateField(auto_now=True)
+    valor = models.DecimalField(max_digits=8, decimal_places=8)
+    nome_destinatario = models.CharField(max_length=100)
+    
     
