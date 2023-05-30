@@ -117,7 +117,8 @@ class Emprestimo(models.Model):
     dataSolicitacao = models.DateField(auto_now=True)
     valorSolicitado = models.DecimalField(validators=[MinValueValidator(1,message='O preço deve ser maior que 1 real'),MaxValueValidator(20000)], max_digits=10, decimal_places=2)
     juros = models.FloatField()
-    valorComJuros = models.FloatField()
+    valorTotalJuros = models.FloatField()
+    valorParcelaJuros = models.FloatField()
     aprovado = models.BooleanField(default=False)
     
     

@@ -104,8 +104,15 @@ class EmprestimoView(viewsets.ModelViewSet):
         token = request.META.get('HTTP_AUTHORIZATION', '').split(' ')[1]
         dados = AccessToken(token)
         usuario = dados['user_id']
-        pegar_conta = Conta.objects.get(id_user=usuario)
-        pegar_saldo = pegar_conta.limite
+        pegar_conta = Conta.objects.get(fk_cliente=usuario)
+
+        valor_solicitado = request.data['valorSolicitado']
+        novo_saldo = pegar_conta.limite + valor_solicitado
+
+        print(novo_saldo)
+        pegar_conta.limite = novo_saldo
+        pegar_conta.save()
+
         # pegar_saldo
         return super().create(request, *args, **kwargs)
     

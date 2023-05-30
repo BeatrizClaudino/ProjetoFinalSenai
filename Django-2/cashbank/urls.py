@@ -6,6 +6,7 @@ router = routers.SimpleRouter()
 router.register('usuario', views.ListarClientes)
 router.register('endereco', views.EnderecoView)
 router.register('conta', views.ContaCreateView)
+router.register('emprestimo', views.EmprestimoView)
 
 
 urlpatterns = router.urls

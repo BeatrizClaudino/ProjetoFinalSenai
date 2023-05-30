@@ -30,7 +30,7 @@ class MovimentacaoSerializer(serializers.ModelSerializer):
         model = Movimentacao
         fields = ['id_movimentacao', 'dataHora', 'valor', 'operacao']
 
-class EmprestimoSerializer(serializers.Serializer):
+class EmprestimoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Emprestimo
-        fields = ['id', 'dataSolicitacao', 'valorSolicitado', 'juros', 'aprovado']
+        fields = ['id', 'dataSolicitacao', 'valorSolicitado', 'juros', 'aprovado', 'valorTotalJuros', 'valorParcelaJuros']
