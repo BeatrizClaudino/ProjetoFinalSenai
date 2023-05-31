@@ -37,7 +37,6 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(cpf, password, **extra_fields)
 
 class Cliente(AbstractUser):
-
     username = None
     nome = models.CharField(max_length=255)
     celular = models.CharField(max_length=20, default='')
@@ -109,9 +108,9 @@ class Movimentacao(models.Model):
         (TRANSFERENCIA_NOME, 'NOME')
     )
     fk_movimentacao = models.ForeignKey(Conta, on_delete=models.CASCADE, related_name='transferencias_enviadas')
-    destinatario = models.ForeignKey(Conta, on_delete=models.CASCADE, related_name='transferencias_recebidas')
-    dataHora = models.DateField(auto_now=True)
-    valor = models.DecimalField(max_digits=8, decimal_places=8)
+    destinatario = models.CharField(max_length=100)
+    cliente = models.CharField(max_length=50)
+    valor = models.DecimalField(max_digits=8, decimal_places=2)
     operacao = models.CharField(max_length=3, choices=TRANSFERENCIA_CHOICES, default=TRANSFERENCIA_PIX)
  
 class Emprestimo(models.Model):
