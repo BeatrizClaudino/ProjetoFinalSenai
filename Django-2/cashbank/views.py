@@ -95,7 +95,50 @@ class MovimentacaoView(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     queryset = Movimentacao.objects.all()
     serializer_class = MovimentacaoSerializer
-    
+
+    def create(self, request, *args, **kwargs):
+        token = request.META.get('HTTP_AUTHORIZATION', '').split(' ')[1]
+        dados = AccessToken(token)
+
+        #Acessar os dados do cliente
+        cliente = dados['user_id']
+        conta_cliente = Conta.objects.get(id=cliente)
+
+        request.data['fk_movimentacao'] = conta_cliente
+        request.POST._mutable = True
+
+        nome = request.data['destinatario']
+        nomeVerificado = Cliente.objects.filter(nome = nome).exists()
+
+        cpf = request.data['destinatario']
+        cpfVerificado = Cliente.objects.filter(cpf = cpf ).exists()
+
+        conta = request.data['destinatario']
+        contaVerificado = Cliente.objects.filter(conta = conta).exists()
+
+        #uma das opções, pega o saldo da pessoa e depois faz o calculo
+
+        if nomeVerificado:
+            valorTransferencia = request.data['valor']
+            nomeDestinatario = Cliente.objects.get(nome=nomeVerificado).id
+            contaDestinatario = Conta.objects.get(id=nomeDestinatario)
+
+
+            conta_cliente.limite -= valorTransferencia
+            conta_cliente.save()
+
+            contaDestinatario.limite += valorTransferencia
+            contaDestinatario.save()
+
+            print(contaDestinatario)
+            print(conta_cliente)
+            return super().create(request, *args, **kwargs)
+
+        else:
+            print("Deu ruim")
+        
+
+
 class EmprestimoView(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     queryset = Emprestimo.objects.all()
@@ -118,6 +161,7 @@ class EmprestimoView(viewsets.ModelViewSet):
 
         # pegar_saldo
         return super().create(request, *args, **kwargs)
+
     
         
         

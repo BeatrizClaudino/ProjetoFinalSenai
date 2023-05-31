@@ -101,16 +101,18 @@ class Cartao(models.Model):
 class Movimentacao(models.Model):
     TRANSFERENCIA_PIX = 'PI'
     TRANSFERENCIA_DOC = 'DC' #TRANSFERENCIA DE CONTAS DO MESMO BANCO 
+    TRANSFERENCIA_NOME = 'NOM'
     
     TRANSFERENCIA_CHOICES = (
         (TRANSFERENCIA_PIX,'PIX'),
         (TRANSFERENCIA_DOC,'DOC'),
+        (TRANSFERENCIA_NOME, 'NOME')
     )
-    cliente = models.ForeignKey(Conta, on_delete=models.CASCADE, related_name='transferencias_enviadas')
+    fk_movimentacao = models.ForeignKey(Conta, on_delete=models.CASCADE, related_name='transferencias_enviadas')
     destinatario = models.ForeignKey(Conta, on_delete=models.CASCADE, related_name='transferencias_recebidas')
     dataHora = models.DateField(auto_now=True)
     valor = models.DecimalField(max_digits=8, decimal_places=8)
-    operacao = models.CharField(max_length=2, choices=TRANSFERENCIA_CHOICES, default=TRANSFERENCIA_PIX)
+    operacao = models.CharField(max_length=3, choices=TRANSFERENCIA_CHOICES, default=TRANSFERENCIA_PIX)
  
 class Emprestimo(models.Model):
     fk_conta_emprestimo = models.ForeignKey(Conta, on_delete=models.CASCADE)
