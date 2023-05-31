@@ -16,7 +16,7 @@ import axios from 'axios';
 
 
 //Colocando o ip da máquina dentro de uma variável para poder utilizar no codigo todo
-export const ip = "192.168.0.104:8000"
+export const ip = "10.109.72.7:8000"
 
 
 export default function Home({ navigation }) {
