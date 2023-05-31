@@ -16,7 +16,7 @@ import axios from 'axios';
 
 
 //Colocando o ip da máquina dentro de uma variável para poder utilizar no codigo todo
-export const ip = "10.109.72.7:8000"
+export const ip = "192.168.0.104:8000"
 
 
 export default function Home({ navigation }) {
@@ -153,7 +153,7 @@ export default function Home({ navigation }) {
                 <View className="flex flex-row justify-evenly h-20">
                     <Menu textoFuncao='Pix' imagem={Pix} evento={teste} />
                     <Menu textoFuncao='Boleto' imagem={Barras} />
-                    <Menu textoFuncao='Transferência' imagem={Transferencias} />
+                    <Menu textoFuncao='Transferência' imagem={Transferencias} evento={() => navigation.navigate("Transferencia")}/>
                     <Menu textoFuncao='Empréstimo' imagem={Cell} evento={() => navigation.navigate("Valor")}/>
                 </View>
                 <TouchableOpacity>

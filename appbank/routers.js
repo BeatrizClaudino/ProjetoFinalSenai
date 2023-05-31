@@ -78,6 +78,11 @@ export default function Routers({ navigation }) {
                     component={Valor}
                     options={{ title: false, headerShown: true }}
                 />
+                <Pilha.Screen
+                    name="Transferencia"
+                    component={Transferencia}
+                    options={{ title: false, headerShown: true }}
+                />
             </Pilha.Navigator>
         </NavigationContainer>
     )

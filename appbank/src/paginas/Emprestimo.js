@@ -5,7 +5,7 @@ import Botao from '../componentes/Button';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const ip = "10.109.72.7:8000"
+export const ip = "192.168.0.104:8000"
 
 const showAlert = () => {
   Alert.alert('Sucesso', 'Empréstimo realizado com sucesso!', [
